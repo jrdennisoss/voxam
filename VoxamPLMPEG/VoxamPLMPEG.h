@@ -40,6 +40,8 @@ struct vpm_vesdec_manual_init_params {
 VEXPORT int vpm_vesdec_initialize_manual(vpm_vesdec_handle vesdec, const struct vpm_vesdec_manual_init_params* const params);
 VEXPORT unsigned vpm_vesdec_get_width(vpm_vesdec_handle vesdec);
 VEXPORT unsigned vpm_vesdec_get_height(vpm_vesdec_handle vesdec);
+VEXPORT unsigned vpm_vesdec_get_mb_width(vpm_vesdec_handle vesdec);
+VEXPORT unsigned vpm_vesdec_get_mb_height(vpm_vesdec_handle vesdec);
 VEXPORT unsigned vpm_vesdec_get_frames_decoded(vpm_vesdec_handle vesdec);
 
 
@@ -55,6 +57,10 @@ VEXPORT int vpm_vesdec_feed_decoder(vpm_vesdec_handle vesdec, const int force_ha
 #define VPM_VESDEC_PICBUF_BACKWARD  3
 VEXPORT int vpm_vesdec_collect_picture_buffer(vpm_vesdec_handle vesdec, const int picformat, const int picbuf, void* const buf, const unsigned off, const unsigned len);
 VEXPORT int vpm_vesdec_get_last_feed_picture_buffer_type(vpm_vesdec_handle vesdec);
+
+VEXPORT unsigned vpm_vesdec_get_picture_buffer_data_size(vpm_vesdec_handle vesdec);
+VEXPORT int vpm_vesdec_memcpy_in_picture_buffer_data(vpm_vesdec_handle vesdec, const int picbuf, const void* const buf, const unsigned off, const unsigned len);
+VEXPORT int vpm_vesdec_memcpy_out_picture_buffer_data(vpm_vesdec_handle vesdec, const int picbuf, void* const buf, const unsigned off, const unsigned len);
 
 
 #endif // #ifndef VOXAMPLMPEG_H_INCLUDED

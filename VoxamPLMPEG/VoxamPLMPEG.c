@@ -192,6 +192,18 @@ vpm_vesdec_get_height(vpm_vesdec_handle vesdec) {
 }
 
 VEXPORT unsigned
+vpm_vesdec_get_mb_width(vpm_vesdec_handle vesdec) {
+    if (!vesdec) return 0;
+    return vesdec->plm_video.mb_width;
+}
+
+VEXPORT unsigned
+vpm_vesdec_get_mb_height(vpm_vesdec_handle vesdec) {
+    if (!vesdec) return 0;
+    return vesdec->plm_video.mb_height;
+}
+
+VEXPORT unsigned
 vpm_vesdec_get_frames_decoded(vpm_vesdec_handle vesdec) {
     if (!vesdec) return 0;
     return (unsigned)vesdec->plm_video.frames_decoded;
@@ -262,6 +274,59 @@ vpm_vesdec_get_last_feed_picture_buffer_type(vpm_vesdec_handle vesdec) {
     if (vesdec->last_decoded_frame == &vesdec->plm_video.frame_forward)   return VPM_VESDEC_PICBUF_FORWARD;
     if (vesdec->last_decoded_frame == &vesdec->plm_video.frame_backward)  return VPM_VESDEC_PICBUF_BACKWARD;
     return -1;
+}
+
+VEXPORT unsigned
+vpm_vesdec_get_picture_buffer_data_size(vpm_vesdec_handle vesdec) {
+    size_t luma_plane_size;
+    size_t chroma_plane_size;
+
+    if (vesdec == NULL) return 0;
+
+    luma_plane_size = vesdec->plm_video.luma_width * vesdec->plm_video.luma_height;
+    chroma_plane_size = vesdec->plm_video.chroma_width * vesdec->plm_video.chroma_height;
+
+    return (int)(luma_plane_size + 2 * chroma_plane_size);
+}
+
+VEXPORT int
+vpm_vesdec_memcpy_in_picture_buffer_data(vpm_vesdec_handle vesdec, const int picbuf, const void* const buf, const unsigned off, const unsigned len) {
+    unsigned picbuf_size;
+    plm_frame_t* frame;
+
+    if (vesdec == NULL) return -1;
+    if (buf == NULL) return -1;
+
+    picbuf_size = vpm_vesdec_get_picture_buffer_data_size(vesdec);
+    if (len < picbuf_size) return -1;
+    if (picbuf_size < 1) return -1;
+
+    frame = vpm_vesdec_get_frame_buffer_ptr(vesdec, picbuf);
+    if (frame == NULL) return -1;
+    if (frame->y.data == NULL) return -1; // y.data is the buffer base...
+
+    memcpy(frame->y.data, ((uint8_t*)buf) + off, picbuf_size);
+    return (int)picbuf_size;
+}
+
+VEXPORT int
+vpm_vesdec_memcpy_out_picture_buffer_data(vpm_vesdec_handle vesdec, const int picbuf, void* const buf, const unsigned off, const unsigned len) {
+    unsigned picbuf_size;
+    plm_frame_t* frame;
+
+    if (vesdec == NULL) return -1;
+    if (buf == NULL) return -1;
+
+    picbuf_size = vpm_vesdec_get_picture_buffer_data_size(vesdec);
+    if (len < picbuf_size) return -1;
+    if (picbuf_size < 1) return -1;
+
+    frame = vpm_vesdec_get_frame_buffer_ptr(vesdec, picbuf);
+    if (frame == NULL) return -1;
+    if (frame->y.data == NULL) return -1; // y.data is the buffer base...
+
+    memcpy(((uint8_t*)buf) + off, frame->y.data, picbuf_size);
+    return (int)picbuf_size;
 }
 
 

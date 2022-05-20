@@ -67,6 +67,12 @@ namespace Voxam.MPEG1ToolKit
             internal extern static uint vpm_vesdec_get_height(IntPtr vesdec);
 
             [DllImport(DLL_FILENAME, CallingConvention = CallingConvention.Cdecl)]
+            internal extern static uint vpm_vesdec_get_mb_width(IntPtr vesdec);
+
+            [DllImport(DLL_FILENAME, CallingConvention = CallingConvention.Cdecl)]
+            internal extern static uint vpm_vesdec_get_mb_height(IntPtr vesdec);
+
+            [DllImport(DLL_FILENAME, CallingConvention = CallingConvention.Cdecl)]
             internal extern static uint vpm_vesdec_get_frames_decoded(IntPtr vesdec);
 
 
@@ -87,6 +93,15 @@ namespace Voxam.MPEG1ToolKit
 
             [DllImport(DLL_FILENAME, CallingConvention = CallingConvention.Cdecl)]
             internal extern static int vpm_vesdec_get_last_feed_picture_buffer_type(IntPtr vesdec);
+
+            [DllImport(DLL_FILENAME, CallingConvention = CallingConvention.Cdecl)]
+            internal extern static uint vpm_vesdec_get_picture_buffer_data_size(IntPtr vesdec);
+            [DllImport(DLL_FILENAME, CallingConvention = CallingConvention.Cdecl)]
+            internal extern static int vpm_vesdec_memcpy_in_picture_buffer_data(IntPtr vesdec, int picbuf,
+                byte[] buf, uint off, uint len);
+            [DllImport(DLL_FILENAME, CallingConvention = CallingConvention.Cdecl)]
+            internal extern static int vpm_vesdec_memcpy_out_picture_buffer_data(IntPtr vesdec, int picbuf,
+                byte[] buf, uint off, uint len);
         }
 
         public class VESDec : IDisposable
@@ -111,6 +126,10 @@ namespace Voxam.MPEG1ToolKit
 
             public int Width { get { return (int)DLL.vpm_vesdec_get_width(_vesdec); } }
             public int Height { get { return (int)DLL.vpm_vesdec_get_height(_vesdec); } }
+
+            public int MacroblockWidth { get { return (int)DLL.vpm_vesdec_get_mb_width(_vesdec); } }
+            public int MacroblockHeight { get { return (int)DLL.vpm_vesdec_get_mb_height(_vesdec); } }
+
             public int FramesDecoded { get { return (int)DLL.vpm_vesdec_get_frames_decoded(_vesdec); } }
 
             public int FeedDecoder(byte[] buf, int off, int len, int max_iterations = -1, int force_has_reference_frame = -1)
@@ -197,6 +216,17 @@ namespace Voxam.MPEG1ToolKit
                     }
                     return DecoderPictureBuffer.Invalid;
                 }
+            }
+
+            public int PictureBufferDataSize { get { return (int)DLL.vpm_vesdec_get_picture_buffer_data_size(_vesdec); } }
+
+            public int CopyInPictureBufferData(DecoderPictureBuffer pictureBuffer, byte[] buf, int off, int len)
+            {
+                return DLL.vpm_vesdec_memcpy_in_picture_buffer_data(_vesdec, toDllEnum(pictureBuffer), buf, (uint)off, (uint)len);
+            }
+            public int CopyOutPictureBufferData(DecoderPictureBuffer pictureBuffer, byte[] buf, int off, int len)
+            {
+                return DLL.vpm_vesdec_memcpy_out_picture_buffer_data(_vesdec, toDllEnum(pictureBuffer), buf, (uint)off, (uint)len);
             }
 
             public int DecodeSinglePicture(
