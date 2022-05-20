@@ -51,22 +51,61 @@ namespace Voxam
             masterSourceProviderUpdated();
         }
 
+        private ToolStripMenuItem _mnuManualDecoderFeedingEnabled;
+
+        private ToolStripMenuItem _mnuShowPredictionArrows;
+        private ToolStripMenuItem _mnuShowPredictionArrowsCompleteDeps = new ToolStripMenuItem("Show Complete Prediction Arrow Dependencies");
+        private ToolStripMenuItem _mnuShowGOPs = new ToolStripMenuItem("Show GOPs");
+        private ToolStripMenuItem _mnuShowSequences = new ToolStripMenuItem("Show Sequences");
+
         private ToolStripItem[] generateMenuItems()
         {
+            _mnuManualDecoderFeedingEnabled = new ToolStripMenuItem("Manual Decoder Feeding Enabled");
+            _mnuManualDecoderFeedingEnabled.Checked = true;
+
+            _mnuShowPredictionArrows = new ToolStripMenuItem("Show Prediction Arrows");
+            _mnuShowPredictionArrows.Checked = _pictureStream.PredictionArrowsVisible;
+            _mnuShowPredictionArrows.Click += _mnuShowPicstureStreamItem_Clicked;
+
+            _mnuShowPredictionArrowsCompleteDeps = new ToolStripMenuItem("Show Complete Prediction Arrow Dependencies");
+            _mnuShowPredictionArrowsCompleteDeps.Checked = _pictureStream.PredictionArrowsVisible;
+            _mnuShowPredictionArrowsCompleteDeps.Click += _mnuShowPicstureStreamItem_Clicked;
+
+            _mnuShowGOPs = new ToolStripMenuItem("Show GOPs");
+            _mnuShowGOPs.Checked = _pictureStream.PredictionArrowsVisible;
+            _mnuShowGOPs.Click += _mnuShowPicstureStreamItem_Clicked;
+
+            _mnuShowSequences = new ToolStripMenuItem("Show Sequences");
+            _mnuShowSequences.Checked = _pictureStream.PredictionArrowsVisible;
+            _mnuShowSequences.Click += _mnuShowPicstureStreamItem_Clicked;
+
             return new ToolStripItem[]
             {
                 new ToolStripMenuItem("View Decoder Picture Buffers", null, mnuViewDecoderPictureBuffers_Click),
                 new ToolStripSeparator(),
-                new ToolStripMenuItem("Manual Decoder Feeding Enabled"),
+                _mnuManualDecoderFeedingEnabled,
                 new ToolStripSeparator(),
-                new ToolStripMenuItem("Show Prediction Arrows"),
-                new ToolStripMenuItem("Show Complete Prediction Arrow Dependencies"),
-                new ToolStripMenuItem("Show GOPs"),
-                new ToolStripMenuItem("Show Sequences"),
+                _mnuShowPredictionArrows,
+                _mnuShowPredictionArrowsCompleteDeps,
+                _mnuShowGOPs,
+                _mnuShowSequences,
             };
         }
 
+        private void _mnuShowPicstureStreamItem_Clicked(object sender, EventArgs e)
+        {
+            ToolStripMenuItem item = sender as ToolStripMenuItem;
+            if (item == null) return;
 
+            item.Checked = !item.Checked;
+
+            if (item == _mnuShowPredictionArrows) _pictureStream.PredictionArrowsVisible = item.Checked;
+            else if (item == _mnuShowPredictionArrowsCompleteDeps) _pictureStream.PredictionArrowsCompleteDependencyChain = item.Checked;
+            else if (item == _mnuShowGOPs) _pictureStream.GOPVisible = item.Checked;
+            else if (item == _mnuShowSequences) _pictureStream.SequenceVisible = item.Checked;
+
+            MWVVideoElementaryStream_Resize(this, null);
+        }
 
         private DecoderPictureBufferViewer _dpbViewer = null;
         private void mnuViewDecoderPictureBuffers_Click(object sender, EventArgs e)
