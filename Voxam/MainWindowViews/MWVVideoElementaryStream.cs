@@ -222,7 +222,7 @@ namespace Voxam
 
 
 
-        private void _pictureStream_MPEG1ObjectClickEvent(object sender, PictureStream.MPEG1ObjectClickEventArgs args)
+        private void _pictureStream_MPEG1ObjectClickEvent(object sender, PictureStream.PictureStreamObjectClickEventArgs args)
         {
             _pictureStream.SelectedPictureIndex = args.PictureIndex;
             displaySelectedPicture();

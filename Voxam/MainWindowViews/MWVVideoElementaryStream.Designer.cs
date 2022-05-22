@@ -94,7 +94,7 @@ namespace Voxam
             this._pictureStream.Size = new System.Drawing.Size(274, 90);
             this._pictureStream.SourceData = null;
             this._pictureStream.TabIndex = 0;
-            this._pictureStream.MPEG1ObjectClickEvent += new Voxam.PictureStream.MPEG1ObjectClickEventHandler(this._pictureStream_MPEG1ObjectClickEvent);
+            this._pictureStream.PictureStreamObjectClickEvent += new Voxam.PictureStream.PictureStreamObjectClickEventHandler(this._pictureStream_MPEG1ObjectClickEvent);
             // 
             // MWVVideoElementaryStream
             // 

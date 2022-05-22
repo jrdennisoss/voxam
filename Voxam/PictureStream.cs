@@ -28,20 +28,20 @@ namespace Voxam
 {
     public partial class PictureStream : UserControl
     {
-        public class MPEG1ObjectClickEventArgs : EventArgs
+        public class PictureStreamObjectClickEventArgs : EventArgs
         {
             public readonly MouseEventArgs MouseEventArgs;
             public readonly IMPEG1Object MPEG1Object;
             public readonly int PictureIndex;
-            public MPEG1ObjectClickEventArgs(MouseEventArgs mouseEventArgs, IMPEG1Object MPEG1Object_ = null, int pictureIndex = -1)
+            public PictureStreamObjectClickEventArgs(MouseEventArgs mouseEventArgs, IMPEG1Object MPEG1Object_ = null, int pictureIndex = -1)
             {
                 MouseEventArgs = mouseEventArgs;
                 MPEG1Object = MPEG1Object_;
                 PictureIndex = pictureIndex;
             }
         }
-        public delegate void MPEG1ObjectClickEventHandler(object sender, MPEG1ObjectClickEventArgs args);
-        public event MPEG1ObjectClickEventHandler MPEG1ObjectClickEvent;
+        public delegate void PictureStreamObjectClickEventHandler(object sender, PictureStreamObjectClickEventArgs args);
+        public event PictureStreamObjectClickEventHandler PictureStreamObjectClickEvent;
 
 
         private Size _pictureMargin = new Size(2, 4);
@@ -664,7 +664,7 @@ namespace Voxam
 
         private void PictureStream_MouseClick(object sender, MouseEventArgs e)
         {
-            if (MPEG1ObjectClickEvent == null) return;
+            if (PictureStreamObjectClickEvent == null) return;
 
             if (e.Y < _pictureYOffset) goto FireMouseOnlyEvent;
             if (e.Y > (_pictureYOffset + _pictureSize.Height)) goto FireMouseOnlyEvent;
@@ -678,12 +678,12 @@ namespace Voxam
             if (relativeClickOffset < _pictureMargin.Width) goto FireMouseOnlyEvent;
             if (relativeClickOffset >= (_totalPictureSize.Width - _pictureMargin.Width)) goto FireMouseOnlyEvent;
 
-            MPEG1ObjectClickEvent(this, new MPEG1ObjectClickEventArgs(e, _sourceData[pictureIndex], pictureIndex));
+            PictureStreamObjectClickEvent(this, new PictureStreamObjectClickEventArgs(e, _sourceData[pictureIndex], pictureIndex));
 
             return;
 
         FireMouseOnlyEvent:
-            MPEG1ObjectClickEvent(this, new MPEG1ObjectClickEventArgs(e));
+            PictureStreamObjectClickEvent(this, new PictureStreamObjectClickEventArgs(e));
             return;
         }
     }
