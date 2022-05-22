@@ -48,8 +48,8 @@ namespace Voxam.MPEG1ToolKit
                     {
                         case MPEG1Picture.STREAM_ID_TYPE: return;
                         case MPEG1GOP.STREAM_ID_TYPE: return;
-                        case MPEG1Sequence.BEGIN_STREAM_ID_TYPE: return;
-                        case MPEG1Sequence.END_STREAM_ID_TYPE: return;
+                        case MPEG1Sequence.STREAM_ID_TYPE: return;
+                        case MPEG1SequenceEnd.STREAM_ID_TYPE: return;
                     }
                 copyInObject(iter);
             }

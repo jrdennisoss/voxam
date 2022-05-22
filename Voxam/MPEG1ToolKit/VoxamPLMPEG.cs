@@ -418,7 +418,7 @@ namespace Voxam.MPEG1ToolKit
                 var iter = sequence.Source.Iterator;
                 iter.SeekSourceTo(sequence.Source.IteratorSourceStreamPosition);
                 if (!iter.MPEGObjectValid) return false;
-                if (iter.MPEGObjectType != MPEG1Sequence.BEGIN_STREAM_ID_TYPE) return false;
+                if (iter.MPEGObjectType != MPEG1Sequence.STREAM_ID_TYPE) return false;
 
                 _loadedSequence = null;
                 if (_vesdec.InitializeWithSequenceHeader(iter.MPEGObjectBuffer, iter.AbsoluteBufferOffset, iter.AbsoluteBufferLength))

@@ -47,12 +47,12 @@ namespace Voxam.MPEG1ToolKit.Objects
                 if (!iter.MPEGObjectValid) continue;
                 switch(iter.MPEGObjectType)
                 {
-                    case MPEG1Sequence.BEGIN_STREAM_ID_TYPE:
+                    case MPEG1Sequence.STREAM_ID_TYPE:
                         sequence = MPEG1Sequence.Marshal(iter);
                         gop = null;
                         pictureParent = sequence;
                         break;
-                    case MPEG1Sequence.END_STREAM_ID_TYPE:
+                    case MPEG1SequenceEnd.STREAM_ID_TYPE:
                         sequence = null;
                         gop = null;
                         pictureParent = null;

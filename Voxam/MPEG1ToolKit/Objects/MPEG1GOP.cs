@@ -28,11 +28,27 @@ namespace Voxam.MPEG1ToolKit.Objects
         private readonly IMPEG1Object _parent;
         private readonly MPEG1ObjectSource _source;
 
+        public readonly bool DropFrame;
+        public readonly byte Hour;
+        public readonly byte Minute;
+        public readonly byte Second;
+        public readonly byte Frame;
+        public readonly bool Closed;
+        public readonly bool Broken;
 
-        public MPEG1GOP(IMPEG1Object parent, MPEG1ObjectSource source)
+
+        public MPEG1GOP(IMPEG1Object parent, MPEG1ObjectSource source, bool dropFrame, byte hour, byte minute, byte second, byte frame, bool closed, bool broken)
         {
             _parent = parent;
             _source = source;
+
+            DropFrame = dropFrame;
+            Hour = hour;
+            Minute = minute;
+            Second = second;
+            Frame = frame;
+            Closed = closed;
+            Broken = broken;
         }
 
         public static MPEG1GOP Marshal(MPEG1StreamObjectIterator iter, IMPEG1Object parent = null)
@@ -42,10 +58,18 @@ namespace Voxam.MPEG1ToolKit.Objects
 
             int len = iter.MPEGObjectContentsBufferLength;
             if (len < 4) return null;
-            byte[] buf = iter.MPEGObjectBuffer;
-            int pos = iter.MPEGObjectContentsBufferOffset;
+            BitStream bits = new BitStream(iter.MPEGObjectBuffer, iter.MPEGObjectContentsBufferOffset, len);
 
-            return new MPEG1GOP(parent, new MPEG1ObjectSource(iter));
+            bool dropFrame = bits.ReadBool(1);
+            byte hour = bits.ReadByte(5);
+            byte minute = bits.ReadByte(6);
+            if (!bits.ReadBool(1)) return null;
+            byte second = bits.ReadByte(6);
+            byte frame = bits.ReadByte(6);
+            bool closed = bits.ReadBool(1);
+            bool broken = bits.ReadBool(1);
+
+            return new MPEG1GOP(parent, new MPEG1ObjectSource(iter), dropFrame, hour, minute, second, frame, closed, broken);
         }
 
 

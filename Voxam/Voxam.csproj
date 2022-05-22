@@ -87,16 +87,23 @@
       <DependentUpon>MWVVideoElementaryStream.cs</DependentUpon>
     </Compile>
     <Compile Include="MasterSourceProvider.cs" />
+    <Compile Include="MPEG1ToolKit\Objects\MPEG1Slice.cs" />
+    <Compile Include="MPEG1ToolKit\Streams\BitStream.cs" />
     <Compile Include="MPEG1ToolKit\MPEG1PictureBufferBuilder.cs" />
     <Compile Include="MPEG1ToolKit\MPEG1PictureBufferManipulator.cs" />
     <Compile Include="MPEG1ToolKit\Objects\IMPEG1Object.cs" />
     <Compile Include="MPEG1ToolKit\Objects\IMPEG1PictureCollection.cs" />
+    <Compile Include="MPEG1ToolKit\Objects\MPEG1Object.cs" />
     <Compile Include="MPEG1ToolKit\Objects\MPEG1ObjectSource.cs" />
+    <Compile Include="MPEG1ToolKit\Objects\MPEG1PackHeader.cs" />
     <Compile Include="MPEG1ToolKit\Objects\MPEG1PESPacket.cs" />
+    <Compile Include="MPEG1ToolKit\Objects\MPEG1ProgramEnd.cs" />
     <Compile Include="MPEG1ToolKit\Objects\MPEG1Sequence.cs" />
     <Compile Include="MPEG1ToolKit\Objects\MPEG1GOP.cs" />
     <Compile Include="MPEG1ToolKit\Objects\MPEG1Picture.cs" />
     <Compile Include="MPEG1ToolKit\Objects\MPEG1PictureCollection.cs" />
+    <Compile Include="MPEG1ToolKit\Objects\MPEG1SequenceEnd.cs" />
+    <Compile Include="MPEG1ToolKit\Objects\MPEG1SystemHeader.cs" />
     <Compile Include="MPEG1ToolKit\Streams\MPEG1FileStreamObjectSource.cs" />
     <Compile Include="MPEG1ToolKit\Streams\MPEG1MemoryStreamObjectSource.cs" />
     <Compile Include="MPEG1ToolKit\Streams\MPEG1StreamObjectIterator.cs" />
