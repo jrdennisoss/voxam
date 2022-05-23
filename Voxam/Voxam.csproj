@@ -94,6 +94,7 @@
     </Compile>
     <Compile Include="MasterSourceProvider.cs" />
     <Compile Include="MPEG1ToolKit\Objects\IMPEG1ObjectCollection.cs" />
+    <Compile Include="MPEG1ToolKit\Objects\MagicalSequence.cs" />
     <Compile Include="MPEG1ToolKit\Objects\MPEG1ObjectCollection.cs" />
     <Compile Include="MPEG1ToolKit\Objects\MPEG1Slice.cs" />
     <Compile Include="MPEG1ToolKit\Streams\BitStream.cs" />

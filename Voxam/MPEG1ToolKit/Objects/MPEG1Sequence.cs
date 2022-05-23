@@ -41,51 +41,11 @@ namespace Voxam.MPEG1ToolKit.Objects
         public readonly bool HasCustomIntraQuantizerMatrix;
         public readonly bool HasCustomNonIntraQuantizerMatrix;
 
-        public double AspectRatio
-        {
-            get
-            {
-                switch(AspectRatioCode)
-                {
-                    case 1: return 1.00;
-                    case 2: return 0.6735;
-                    case 3: return 0.7031; // PAL 16:9
-                    case 4: return 0.7615;
-                    case 5: return 0.8055;
-                    case 6: return 0.8437; // NTSC 16:9
-                    case 7: return 0.8935;
-                    case 8: return 0.9375; // PAL 4:3
-                    case 9: return 0.9815;
-                    case 10: return 1.0255;
-                    case 11: return 1.0695;
-                    case 12: return 1.1250; // NTSC 4:3
-                    case 13: return 1.1575;
-                    case 14: return 1.2015;
-                }
-                return 0.00;
-            }
-        }
-        public bool IsMagicalFrameRate { get => FrameRateCode > 8; }
-        public double FrameRate
-        {
-            get
-            {
-                byte frameRateCode = FrameRateCode;
-                if (IsMagicalFrameRate) frameRateCode &= 0x07;
-                switch (frameRateCode)
-                {
-                    case 1: return 24000.00 / 1001.00;
-                    case 2: return 24.00;
-                    case 3: return 25.00;
-                    case 4: return 30000.00 / 1001.00;
-                    case 5: return 30.00;
-                    case 6: return 50.00;
-                    case 7: return 60000.00 / 1001.00;
-                    case 8: return 60.00;
-                }
-                return 0.00;
-            }
-        }
+
+
+        public virtual double AspectRatio { get => LookupAspectRatio(AspectRatioCode); }
+        public virtual double FrameRate { get => LookupFrameRate(FrameRateCode); }
+
 
         public bool Equals(MPEG1Sequence other)
         {
@@ -141,7 +101,50 @@ namespace Voxam.MPEG1ToolKit.Objects
             return new MPEG1Sequence(parent, new MPEG1ObjectSource(iter), horizontalSize, verticalSize, aspectRatioCode, frameRateCode, bitrate, vbvBufferSize, constrainedParameters, hasCustomIntraQuantizerMatrix, hasCustomNonIntraQuantizerMatrix);
         }
 
-        public string Name => "MPEG-1 Sequence";
+
+
+
+        public static double LookupAspectRatio(byte aspectRatioCode)
+        {
+            switch (aspectRatioCode)
+            {
+                case 1: return 1.00;
+                case 2: return 0.6735;
+                case 3: return 0.7031; // PAL 16:9
+                case 4: return 0.7615;
+                case 5: return 0.8055;
+                case 6: return 0.8437; // NTSC 16:9
+                case 7: return 0.8935;
+                case 8: return 0.9375; // PAL 4:3
+                case 9: return 0.9815;
+                case 10: return 1.0255;
+                case 11: return 1.0695;
+                case 12: return 1.1250; // NTSC 4:3
+                case 13: return 1.1575;
+                case 14: return 1.2015;
+            }
+            return 0.00;
+        }
+        public static double LookupFrameRate(byte frameRateCode)
+        {
+            switch (frameRateCode)
+            {
+                case 1: return 24000.00 / 1001.00;
+                case 2: return 24.00;
+                case 3: return 25.00;
+                case 4: return 30000.00 / 1001.00;
+                case 5: return 30.00;
+                case 6: return 50.00;
+                case 7: return 60000.00 / 1001.00;
+                case 8: return 60.00;
+            }
+            return 0.00;
+        }
+
+
+
+
+        public virtual string Name => "MPEG-1 Sequence";
 
         public IMPEG1Object Parent => _parent;
 

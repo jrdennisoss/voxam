@@ -617,7 +617,7 @@ namespace Voxam
             if (!_sequenceVisible) return;
             if (sequence == null) return;
 
-            String sequenceText = (sequence.IsMagicalFrameRate ? "Magical" : "Standard") + " Sequence";
+            String sequenceText = sequence.Name;
 
             int xoff = _totalPictureSize.Width;
             xoff *= firstPictureIndex;

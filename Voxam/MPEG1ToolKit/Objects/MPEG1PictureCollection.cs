@@ -50,7 +50,7 @@ namespace Voxam.MPEG1ToolKit.Objects
                 switch(iter.MPEGObjectType)
                 {
                     case MPEG1Sequence.STREAM_ID_TYPE:
-                        var newSequence = MPEG1Sequence.Marshal(iter);
+                        var newSequence = MagicalSequence.Marshal(iter);
                         if (IGNORE_DUPLICATE_SEQUENCE_HEADERS && (sequence != null) && (newSequence != null))
                         {
                             if (sequence.Equals(newSequence))

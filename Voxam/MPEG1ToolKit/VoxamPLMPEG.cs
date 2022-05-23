@@ -368,8 +368,11 @@ namespace Voxam.MPEG1ToolKit
                 if (iter.MPEGObjectType != MPEG1Picture.STREAM_ID_TYPE) return false;
 
                 var picbuf = new MPEG1PictureBufferBuilder(iter);
-                var mainp = new MPEG1PictureBufferManipulator(picbuf.Buffer, 0, picbuf.Length);
-                mainp.OverrideFCode(4, 4);
+                if (_loadedSequence is MagicalSequence)
+                {
+                    var mainp = new MPEG1PictureBufferManipulator(picbuf.Buffer, 0, picbuf.Length);
+                    mainp.OverrideFCode(4, 4);
+                }
                 if (_vesdec.FramesDecoded == 0)
                 {
                     if (!_vesdec.DecodeSinglePicture(_decodedPicture, picbuf.Buffer, 0, picbuf.Length)) return false;
