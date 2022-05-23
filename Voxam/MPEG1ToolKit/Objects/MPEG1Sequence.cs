@@ -131,7 +131,7 @@ namespace Voxam.MPEG1ToolKit.Objects
             int verticalSize = bits.ReadInt(12);
             byte aspectRatioCode = bits.ReadByte(4);
             byte frameRateCode = bits.ReadByte(4);
-            int bitrate = bits.ReadInt(10);
+            int bitrate = bits.ReadInt(18);
             if (!bits.ReadBool()) return null;
             int vbvBufferSize = bits.ReadInt(10);
             bool constrainedParameters = bits.ReadBool(1);
