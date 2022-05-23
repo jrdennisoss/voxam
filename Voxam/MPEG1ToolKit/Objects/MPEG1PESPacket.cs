@@ -57,6 +57,13 @@ namespace Voxam.MPEG1ToolKit.Objects
             return (streamIdType >= 0xBD) && (streamIdType <= 0xEF);
         }
 
+        public bool IsVideoType { get => (StreamIdType & 0xE0) == 0xE0; }
+        public bool IsAudioType { get => (StreamIdType & 0xE0) == 0xC0; }
+        public bool IsPrivateType { get => IsPrivate1Type || IsPrivate2Type; }
+        public bool IsPrivate1Type { get => StreamIdType == 0xBD; }
+        public bool IsPrivate2Type { get => StreamIdType == 0xBF; }
+        public bool IsPaddingType { get => StreamIdType == 0xBE; }
+
         public MPEG1PESPacket(IMPEG1Object parent, MPEG1ObjectSource source, byte streamIdType,
             int payloadLength,
             int payloadStartOffset,
