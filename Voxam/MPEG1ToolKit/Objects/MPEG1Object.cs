@@ -61,7 +61,7 @@ namespace Voxam.MPEG1ToolKit.Objects
             return rv;
         }
 
-        public string Name => String.Format("MPEG-1 Object ID: 0x{0:2X}", _streamIdType);
+        public string Name => String.Format("MPEG-1 Object ID: 0x{0:X02}", _streamIdType);
 
         public IMPEG1Object Parent => _parent;
 
