@@ -577,7 +577,7 @@ namespace Voxam
             if (!_gopVisible) return;
             if (gop == null) return;
 
-            String gopText = "GOP";
+            String gopText = String.Format("GOP {0:d02}:{1:d02}:{2:d02}.{3:d02}", gop.Hour, gop.Minute, gop.Second, gop.Frame);
 
             int xoff = _totalPictureSize.Width;
             xoff *= firstPictureIndex;
