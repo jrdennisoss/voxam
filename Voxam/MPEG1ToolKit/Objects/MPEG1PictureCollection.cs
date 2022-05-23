@@ -27,6 +27,8 @@ namespace Voxam.MPEG1ToolKit.Objects
 {
     public class MPEG1PictureCollection : IMPEG1PictureCollection
     {
+        private const bool IGNORE_DUPLICATE_SEQUENCE_HEADERS = true;
+
         private readonly List<MPEG1Picture> _list;
         private MPEG1PictureCollection(List<MPEG1Picture> list)
         {
@@ -48,7 +50,13 @@ namespace Voxam.MPEG1ToolKit.Objects
                 switch(iter.MPEGObjectType)
                 {
                     case MPEG1Sequence.STREAM_ID_TYPE:
-                        sequence = MPEG1Sequence.Marshal(iter);
+                        var newSequence = MPEG1Sequence.Marshal(iter);
+                        if (IGNORE_DUPLICATE_SEQUENCE_HEADERS && (sequence != null) && (newSequence != null))
+                        {
+                            if (sequence.Equals(newSequence))
+                                break; 
+                        }
+                        sequence = newSequence;
                         gop = null;
                         pictureParent = sequence;
                         break;

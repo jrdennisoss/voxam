@@ -87,6 +87,20 @@ namespace Voxam.MPEG1ToolKit.Objects
             }
         }
 
+        public bool Equals(MPEG1Sequence other)
+        {
+            return 
+                (HorizontalSize == other.HorizontalSize) &&
+                (VerticalSize == other.VerticalSize) &&
+                (AspectRatioCode == other.AspectRatioCode) &&
+                (FrameRateCode == other.FrameRateCode) &&
+                (Bitrate == other.Bitrate) &&
+                (VBVBufferSize == other.VBVBufferSize) &&
+                (ConstrainedParameters == other.ConstrainedParameters) &&
+                (HasCustomIntraQuantizerMatrix == other.HasCustomIntraQuantizerMatrix) &&
+                (HasCustomNonIntraQuantizerMatrix == other.HasCustomNonIntraQuantizerMatrix);
+        }
+
 
 
         public MPEG1Sequence(IMPEG1Object parent, MPEG1ObjectSource source, int horizontalSize, int verticalSize, byte aspectRatioCode, byte frameRateCode, int bitrate, int vbvBufferSize, bool constrainedParameters, bool hasCustomIntraQuantizerMatrix, bool hasCustomNonIntraQuantizerMatrix)
