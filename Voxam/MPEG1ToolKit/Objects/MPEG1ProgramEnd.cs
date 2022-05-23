@@ -38,9 +38,6 @@ namespace Voxam.MPEG1ToolKit.Objects
             if (!iter.MPEGObjectValid) return null;
             if (iter.MPEGObjectType != STREAM_ID_TYPE) return null;
 
-            int len = iter.MPEGObjectContentsBufferLength;
-            if (len < 8) return null;
-
             return new MPEG1ProgramEnd(parent, new MPEG1ObjectSource(iter));
         }
 
