@@ -155,11 +155,15 @@ namespace Voxam
 
         private void loadMasterSourceFromFile(string filename)
         {
+            this.Text = "Voxam";
             if (filename != null)
             {
                 try
                 {
                     this.MasterSourceProvider = new MasterSourceProvider(filename);
+                    int lastSlash = filename.LastIndexOf('\\');
+                    if (lastSlash >= 0) filename = filename.Substring(lastSlash + 1);
+                    this.Text += " - " + filename;
                 }
                 catch (Exception ex)
                 {
@@ -167,6 +171,7 @@ namespace Voxam
                     this.MasterSourceProvider = null;
                 }
             }
+
         }
     }
 }
