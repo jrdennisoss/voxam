@@ -55,8 +55,10 @@ namespace Voxam
             InitializeComponent();
             _styleScheme.StyleForm(this);
 
+            //construct and attach all MainWindowViews here...
             this.SuspendLayout();
             putView(new MWVStart(_styleScheme));
+            putView(new MWVSystem(_styleScheme));
             putView(new MWVVideoElementaryStream(_styleScheme, _threadWorkerPool));
             this.ResumeLayout(true);
             setViewMode(_masterSourceProvider != null);

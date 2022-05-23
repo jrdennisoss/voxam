@@ -22,22 +22,53 @@ using System;
 using Voxam.MPEG1ToolKit.Objects;
 using Voxam.MPEG1ToolKit.Streams;
 
+//
+// This class acts as a single place to cotnrol access to the source stream
+// that anything within the UI works with. This is because:
+// . Caching can be managed in a single place
+// . Filtering can be managed in a single place
+// . Data fetching, notification events, and multi-threading can be managed in a single place
+//
+
 
 namespace Voxam
 {
     public class MasterSourceProvider : IDisposable
     {
+        //
+        // system/main-level stuff is here...
+        //
         public readonly MPEG1StreamObjectIterator PrimaryIterator;
+        IMPEG1ObjectCollection _objectCollection = null;
+        public IMPEG1ObjectCollection Objects
+        {
+            get
+            {
+                if (_objectCollection == null)
+                {
+                    var iter = PrimaryIterator;
+                    if (iter == null) return null;
+                    iter.SeekSourceTo(0);
+                    _objectCollection = MPEG1ObjectCollection.Marshal(iter);
+                }
+                return _objectCollection;
+            }
+        }
 
+
+
+        //
+        // video stream stuff is here...
+        //
         private MPEG1StreamObjectIterator _videoIterator = null;
         public MPEG1StreamObjectIterator VideoIterator
         {
             get
             {
+                if (_videoIterator == null) AutoSetVideoIterator();
                 return _videoIterator;
             }
         }
-
         IMPEG1PictureCollection _pictureCollection = null;
         public IMPEG1PictureCollection Pictures
         {
@@ -54,25 +85,70 @@ namespace Voxam
             }
         }
 
+
+
+
+
+
+
         public MasterSourceProvider(string filename)
         {
             PrimaryIterator = new MPEG1StreamObjectIterator(new MPEG1FileStreamObjectSource(filename));
-            _videoIterator = AllocateSubstream(0xE0);
         }
 
         public MPEG1StreamObjectIterator AllocateSubstream(byte streamid)
         {
-            if (!PrimaryIterator.StartOfStream) PrimaryIterator.SeekSourceTo(0);
-            for (; !PrimaryIterator.EndOfStream; PrimaryIterator.Next())
+            var iter = PrimaryIterator;
+            iter.SeekSourceTo(0);
+            for (; !iter.EndOfStream; iter.Next())
             {
-                if (PrimaryIterator.MPEGObjectValid &&
-                    PrimaryIterator.MPEGObjectTypeSubstream &&
-                    (PrimaryIterator.MPEGObjectType == streamid))
+                if (iter.MPEGObjectValid &&
+                    iter.MPEGObjectTypeSubstream &&
+                    (iter.MPEGObjectType == streamid))
                 {
-                    return new MPEG1StreamObjectIterator(new MPEG1SubStreamObjectSource(PrimaryIterator));
+                    return new MPEG1StreamObjectIterator(new MPEG1SubStreamObjectSource(iter));
                 }
             }
             return null;
+        }
+
+        public void AutoSetVideoIterator()
+        {
+            if (_videoIterator != null)
+            {
+                if (_videoIterator != PrimaryIterator)
+                    _videoIterator.Dispose();
+            }
+            _videoIterator = null;
+
+            //first see if the master iterator's first MPEG object is a video elemenatry stream only object
+            var iter = PrimaryIterator;
+            iter.SeekSourceTo(0);
+            for (; !iter.EndOfStream; iter.Next())
+            {
+                if (!iter.MPEGObjectValid) continue;
+                if (iter.MPEGObjectType <= 0xB8)
+                {
+                    //first valid MPEG object type in the stream is <= 0xB8...
+                    //this is a video elementary stream (non-system) object...
+                    //
+                    //here we can assume that the primary iterator IS the video
+                    //iterator... simply just reference the primary...
+                    _videoIterator = PrimaryIterator;
+                    return;
+                }
+                break;
+            }
+
+            //find the first video stream id in the stream...
+            for (; !iter.EndOfStream; iter.Next())
+            {
+                if (!iter.MPEGObjectValid) continue;
+                if (!iter.MPEGObjectTypeSubstream) continue;
+                if ((iter.MPEGObjectType & 0xE0) != 0xE0) continue;
+                _videoIterator = new MPEG1StreamObjectIterator(new MPEG1SubStreamObjectSource(iter));
+                break;
+            }
         }
 
         public void Dispose()

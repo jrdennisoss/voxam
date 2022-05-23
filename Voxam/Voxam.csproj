@@ -80,6 +80,12 @@
     <Compile Include="MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="MainWindowViews\MWVSystem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MainWindowViews\MWVSystem.Designer.cs">
+      <DependentUpon>MWVSystem.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainWindowViews\MWVVideoElementaryStream.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -87,6 +93,8 @@
       <DependentUpon>MWVVideoElementaryStream.cs</DependentUpon>
     </Compile>
     <Compile Include="MasterSourceProvider.cs" />
+    <Compile Include="MPEG1ToolKit\Objects\IMPEG1ObjectCollection.cs" />
+    <Compile Include="MPEG1ToolKit\Objects\MPEG1ObjectCollection.cs" />
     <Compile Include="MPEG1ToolKit\Objects\MPEG1Slice.cs" />
     <Compile Include="MPEG1ToolKit\Streams\BitStream.cs" />
     <Compile Include="MPEG1ToolKit\MPEG1PictureBufferBuilder.cs" />
@@ -117,6 +125,12 @@
     <Compile Include="MainWindowViews\MWVStart.Designer.cs">
       <DependentUpon>MWVStart.cs</DependentUpon>
     </Compile>
+    <Compile Include="ObjectStream.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ObjectStream.Designer.cs">
+      <DependentUpon>ObjectStream.cs</DependentUpon>
+    </Compile>
     <Compile Include="PictureStream.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -140,8 +154,14 @@
     <EmbeddedResource Include="MainWindowViews\MWVStart.resx">
       <DependentUpon>MWVStart.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="MainWindowViews\MWVSystem.resx">
+      <DependentUpon>MWVSystem.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainWindowViews\MWVVideoElementaryStream.resx">
       <DependentUpon>MWVVideoElementaryStream.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ObjectStream.resx">
+      <DependentUpon>ObjectStream.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PictureStream.resx">
       <DependentUpon>PictureStream.cs</DependentUpon>
