@@ -19,6 +19,7 @@
 
 using System;
 
+using Voxam.MPEG1ToolKit.ReelMagic;
 using Voxam.MPEG1ToolKit.Objects;
 using Voxam.MPEG1ToolKit.Streams;
 
@@ -39,7 +40,7 @@ namespace Voxam
         // system/main-level stuff is here...
         //
         public readonly MPEG1StreamObjectIterator PrimaryIterator;
-        IMPEG1ObjectCollection _objectCollection = null;
+        private IMPEG1ObjectCollection _objectCollection = null;
         public IMPEG1ObjectCollection Objects
         {
             get
@@ -69,7 +70,7 @@ namespace Voxam
                 return _videoIterator;
             }
         }
-        IMPEG1PictureCollection _pictureCollection = null;
+        private IMPEG1PictureCollection _pictureCollection = null;
         public IMPEG1PictureCollection Pictures
         {
             get
@@ -85,6 +86,25 @@ namespace Voxam
             }
         }
 
+
+        //
+        // ReelMagic video converter stuff...
+        //
+        public readonly VideoConverterSettings VideoConverterSettings = new VideoConverterSettings();
+        private VideoConverterPictureCollection _videoConverterPictureCollection = null;
+        public VideoConverterPictureCollection VideoConverterPictureCollection
+        {
+            get
+            {
+                if (_videoConverterPictureCollection == null)
+                {
+                    var pictures = Pictures;
+                    if (pictures == null) return null;
+                    _videoConverterPictureCollection = new VideoConverterPictureCollection(VideoConverterSettings, pictures);
+                }
+                return _videoConverterPictureCollection;
+            }
+        }
 
 
 

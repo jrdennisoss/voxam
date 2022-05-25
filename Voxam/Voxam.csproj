@@ -97,9 +97,11 @@
     <Compile Include="MPEG1ToolKit\Objects\MagicalSequence.cs" />
     <Compile Include="MPEG1ToolKit\Objects\MPEG1ObjectCollection.cs" />
     <Compile Include="MPEG1ToolKit\Objects\MPEG1Slice.cs" />
+    <Compile Include="MPEG1ToolKit\ReelMagic\VideoConverter.cs" />
+    <Compile Include="MPEG1ToolKit\ReelMagic\VideoConverterPictureCollection.cs" />
+    <Compile Include="MPEG1ToolKit\ReelMagic\VideoConverterSettings.cs" />
     <Compile Include="MPEG1ToolKit\Streams\BitStream.cs" />
     <Compile Include="MPEG1ToolKit\MPEG1PictureBufferBuilder.cs" />
-    <Compile Include="MPEG1ToolKit\MPEG1PictureBufferManipulator.cs" />
     <Compile Include="MPEG1ToolKit\Objects\IMPEG1Object.cs" />
     <Compile Include="MPEG1ToolKit\Objects\IMPEG1PictureCollection.cs" />
     <Compile Include="MPEG1ToolKit\Objects\MPEG1Object.cs" />

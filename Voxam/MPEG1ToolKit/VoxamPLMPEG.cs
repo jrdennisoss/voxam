@@ -24,6 +24,7 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 
 using Voxam.MPEG1ToolKit.Objects;
+using Voxam.MPEG1ToolKit.ReelMagic;
 using Voxam.MPEG1ToolKit.Threading;
 
 
@@ -310,6 +311,7 @@ namespace Voxam.MPEG1ToolKit
             private Bitmap _backwardPictureBuffer = null;
 
             public ThreadWorkerPool ThreadWorkerPool = null;
+            public VideoConverterPictureCollection VideoConverterPictureCollection;
 
             public Image DecodedPicture { get { return _decodedPicture; } }
 
@@ -368,11 +370,11 @@ namespace Voxam.MPEG1ToolKit
                 if (iter.MPEGObjectType != MPEG1Picture.STREAM_ID_TYPE) return false;
 
                 var picbuf = new MPEG1PictureBufferBuilder(iter);
-                if (_loadedSequence is MagicalSequence)
+                if (this.VideoConverterPictureCollection != null)
                 {
-                    var mainp = new MPEG1PictureBufferManipulator(picbuf.Buffer, 0, picbuf.Length);
-                    mainp.OverrideFCode(4, 4);
+                    this.VideoConverterPictureCollection[picture]?.PatchPicture(picture, picbuf.Buffer, 0, picbuf.Length);
                 }
+
                 if (_vesdec.FramesDecoded == 0)
                 {
                     if (!_vesdec.DecodeSinglePicture(_decodedPicture, picbuf.Buffer, 0, picbuf.Length)) return false;

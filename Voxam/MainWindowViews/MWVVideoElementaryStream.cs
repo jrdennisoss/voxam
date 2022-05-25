@@ -81,6 +81,7 @@ namespace Voxam
 
             return new ToolStripItem[]
             {
+                new ToolStripMenuItem("ReelMagic Video Converter Settings", null, mnuReelMagicVideoConverterSettings_Click),
                 new ToolStripMenuItem("View Decoder Picture Buffers", null, mnuViewDecoderPictureBuffers_Click),
                 new ToolStripSeparator(),
                 _mnuManualDecoderFeedingEnabled,
@@ -106,6 +107,12 @@ namespace Voxam
 
             MWVVideoElementaryStream_Resize(this, null);
         }
+
+        private void mnuReelMagicVideoConverterSettings_Click(object sender, EventArgs e)
+        {
+            //
+        }
+
 
         private DecoderPictureBufferViewer _dpbViewer = null;
         private void mnuViewDecoderPictureBuffers_Click(object sender, EventArgs e)
@@ -167,6 +174,7 @@ namespace Voxam
             if (_masterSourceProvider.Pictures == _pictureStream.SourceData) return;
             _pictureStream.SourceData = _masterSourceProvider.Pictures;
             _pictureStream.SelectedPictureIndex = 0;
+            _decoder.VideoConverterPictureCollection = _masterSourceProvider.VideoConverterPictureCollection;
             displaySelectedPicture();
         }
 
