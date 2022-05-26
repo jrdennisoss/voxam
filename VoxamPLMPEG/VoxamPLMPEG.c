@@ -321,6 +321,18 @@ vpm_vesdec_get_picture_buffer_data_size(vpm_vesdec_handle vesdec) {
 }
 
 VEXPORT int
+vpm_vesdec_get_picture_buffer_decode_tag(vpm_vesdec_handle vesdec, const int picbuf) {
+    plm_frame_t* frame;
+
+    if (vesdec == NULL) return -1;
+
+    frame = vpm_vesdec_get_frame_buffer_ptr(vesdec, picbuf);
+    if (frame == NULL) return -1;
+    return frame->decode_tag;
+}
+
+
+VEXPORT int
 vpm_vesdec_memcpy_in_picture_buffer_data(vpm_vesdec_handle vesdec, const int picbuf, const void* const buf, const unsigned off, const unsigned len) {
     unsigned picbuf_size;
     plm_frame_t* frame;

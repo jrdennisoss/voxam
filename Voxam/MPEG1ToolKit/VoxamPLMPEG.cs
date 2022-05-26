@@ -102,11 +102,15 @@ namespace Voxam.MPEG1ToolKit
             [DllImport(DLL_FILENAME, CallingConvention = CallingConvention.Cdecl)]
             internal extern static uint vpm_vesdec_get_picture_buffer_data_size(IntPtr vesdec);
             [DllImport(DLL_FILENAME, CallingConvention = CallingConvention.Cdecl)]
+            internal extern static int vpm_vesdec_get_picture_buffer_decode_tag(IntPtr vesdec, int picbuf);
+            [DllImport(DLL_FILENAME, CallingConvention = CallingConvention.Cdecl)]
             internal extern static int vpm_vesdec_memcpy_in_picture_buffer_data(IntPtr vesdec, int picbuf,
                 byte[] buf, uint off, uint len);
             [DllImport(DLL_FILENAME, CallingConvention = CallingConvention.Cdecl)]
             internal extern static int vpm_vesdec_memcpy_out_picture_buffer_data(IntPtr vesdec, int picbuf,
                 byte[] buf, uint off, uint len);
+
+
         }
 
         public class VESDec : IDisposable
@@ -243,7 +247,7 @@ namespace Voxam.MPEG1ToolKit
             }
 
             public int PictureBufferDataSize { get { return (int)DLL.vpm_vesdec_get_picture_buffer_data_size(_vesdec); } }
-
+            public int GetPictureDecodeTag(DecoderPictureBuffer pictureBuffer) => DLL.vpm_vesdec_get_picture_buffer_decode_tag(_vesdec, toDllEnum(pictureBuffer));
             public int CopyInPictureBufferData(DecoderPictureBuffer pictureBuffer, byte[] buf, int off, int len)
             {
                 return DLL.vpm_vesdec_memcpy_in_picture_buffer_data(_vesdec, toDllEnum(pictureBuffer), buf, (uint)off, (uint)len);

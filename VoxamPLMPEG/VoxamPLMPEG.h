@@ -64,6 +64,7 @@ VEXPORT int vpm_vesdec_collect_picture_buffer(vpm_vesdec_handle vesdec, const in
 VEXPORT int vpm_vesdec_get_last_feed_picture_buffer_type(vpm_vesdec_handle vesdec);
 
 VEXPORT unsigned vpm_vesdec_get_picture_buffer_data_size(vpm_vesdec_handle vesdec);
+VEXPORT int vpm_vesdec_get_picture_buffer_decode_tag(vpm_vesdec_handle vesdec, const int picbuf);
 VEXPORT int vpm_vesdec_memcpy_in_picture_buffer_data(vpm_vesdec_handle vesdec, const int picbuf, const void* const buf, const unsigned off, const unsigned len);
 VEXPORT int vpm_vesdec_memcpy_out_picture_buffer_data(vpm_vesdec_handle vesdec, const int picbuf, void* const buf, const unsigned off, const unsigned len);
 
