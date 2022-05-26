@@ -91,7 +91,7 @@ namespace Voxam
             this._lblForward.ForeColor = System.Drawing.Color.Yellow;
             this._lblForward.Location = new System.Drawing.Point(121, 31);
             this._lblForward.Name = "_lblForward";
-            this._lblForward.Size = new System.Drawing.Size(87, 24);
+            this._lblForward.Size = new System.Drawing.Size(129, 33);
             this._lblForward.TabIndex = 3;
             this._lblForward.Text = "Forward";
             this._lblForward.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -103,7 +103,7 @@ namespace Voxam
             this._lblCurrent.ForeColor = System.Drawing.Color.Yellow;
             this._lblCurrent.Location = new System.Drawing.Point(362, 31);
             this._lblCurrent.Name = "_lblCurrent";
-            this._lblCurrent.Size = new System.Drawing.Size(79, 24);
+            this._lblCurrent.Size = new System.Drawing.Size(119, 33);
             this._lblCurrent.TabIndex = 4;
             this._lblCurrent.Text = "Current";
             this._lblCurrent.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -115,7 +115,7 @@ namespace Voxam
             this._lblBackward.ForeColor = System.Drawing.Color.Yellow;
             this._lblBackward.Location = new System.Drawing.Point(625, 31);
             this._lblBackward.Name = "_lblBackward";
-            this._lblBackward.Size = new System.Drawing.Size(100, 24);
+            this._lblBackward.Size = new System.Drawing.Size(151, 33);
             this._lblBackward.TabIndex = 5;
             this._lblBackward.Text = "Backward";
             this._lblBackward.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -127,7 +127,7 @@ namespace Voxam
             this._lblPointer.ForeColor = System.Drawing.Color.Red;
             this._lblPointer.Location = new System.Drawing.Point(152, 242);
             this._lblPointer.Name = "_lblPointer";
-            this._lblPointer.Size = new System.Drawing.Size(34, 39);
+            this._lblPointer.Size = new System.Drawing.Size(53, 61);
             this._lblPointer.TabIndex = 6;
             this._lblPointer.Text = "^";
             this._lblPointer.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -139,7 +139,7 @@ namespace Voxam
             this._lblNoBuffers.ForeColor = System.Drawing.Color.Red;
             this._lblNoBuffers.Location = new System.Drawing.Point(410, 85);
             this._lblNoBuffers.Name = "_lblNoBuffers";
-            this._lblNoBuffers.Size = new System.Drawing.Size(229, 226);
+            this._lblNoBuffers.Size = new System.Drawing.Size(343, 340);
             this._lblNoBuffers.TabIndex = 7;
             this._lblNoBuffers.Text = "X";
             this._lblNoBuffers.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -163,6 +163,7 @@ namespace Voxam
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "DecoderPictureBufferViewer";
+            this.ShowInTaskbar = false;
             this.Text = "Video Decoder Picture Buffer Viewer";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DecoderPictureBufferViewer_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this._pbForward)).EndInit();
