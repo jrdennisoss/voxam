@@ -18,6 +18,7 @@
 
 
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 using Voxam.MPEG1ToolKit.Objects;
@@ -27,6 +28,8 @@ namespace Voxam
     public partial class MPEGObjectInspector : Form
     {
         private IMPEG1Object _object = null;
+        private readonly Font _sectionFont;
+
         public IMPEG1Object InspectedObject
         {
             get => _object;
@@ -40,6 +43,14 @@ namespace Voxam
         public MPEGObjectInspector(IMPEG1Object obj = null)
         {
             InitializeComponent();
+            _sectionFont = new System.Drawing.Font(
+                _dataGridView.Font.FontFamily,
+                _dataGridView.Font.Size,
+                System.Drawing.FontStyle.Bold,
+                _dataGridView.Font.Unit,
+                _dataGridView.Font.GdiCharSet
+            );
+
             _object = obj;
             updateObjectDisplay();
         }
@@ -56,13 +67,25 @@ namespace Voxam
         {
             if (obj == null) return;
 
-            _dataGridView.Rows.Add(new String[] { obj.Name, null, null });
+            _dataGridView.Rows.Add(new String[] { obj.Name, null });
+            _dataGridView.Rows[_dataGridView.RowCount - 1].Cells[0].Style.Font = _sectionFont;
+
+
             if (obj is MPEG1Picture) appendObjectDisplay((MPEG1Picture)obj);
             else if (obj is MPEG1GOP) appendObjectDisplay((MPEG1GOP)obj);
             else if (obj is MPEG1Sequence) appendObjectDisplay((MPEG1Sequence)obj);
 
             if (followParent) dispatchAppendObject(obj.Parent, true);
         }
+
+        private void appendKV(string key, string value)
+        {
+            _dataGridView.Rows.Add(new String[] { key, value });
+        }
+
+        private void appendKV(string key, int value) => appendKV(key, value.ToString());
+        private void appendKV(string key, uint value) => appendKV(key, value.ToString());
+        private void appendKV(string key, byte value) => appendKV(key, value.ToString());
 
         private void appendObjectDisplay(MPEG1Picture picture)
         {
@@ -74,9 +97,9 @@ namespace Voxam
                 case MPEG1Picture.PictureType.Bipredictive: pictureType = "B: Bi-Predictive"; break;
                 case MPEG1Picture.PictureType.DirectCoded:  pictureType = "D: Direct-Coded";  break;
             }
-            _dataGridView.Rows.Add(new String[] { null, "Temporal Sequence Number", picture.TemporalSequenceNumber.ToString() });
-            _dataGridView.Rows.Add(new String[] { null, "Picture Type", pictureType });
-            _dataGridView.Rows.Add(new String[] { null, "VBV Delay", picture.VBVDelay.ToString() });
+            appendKV("Temporal Sequence Number", picture.TemporalSequenceNumber);
+            appendKV("Picture Type", pictureType );
+            appendKV("VBV Delay", picture.VBVDelay);
 
             string fullPELForwardVectorValue = "N/A";
             string forwardFCodeValue = "N/A";
@@ -96,32 +119,31 @@ namespace Voxam
                 }
             }
 
-            _dataGridView.Rows.Add(new String[] { null, "Full PEL Forward Vector", fullPELForwardVectorValue});
-            _dataGridView.Rows.Add(new String[] { null, "Forward f_code", forwardFCodeValue});
-            _dataGridView.Rows.Add(new String[] { null, "Full PEL Backward Vector", fullPELBackwardVectorValue});
-            _dataGridView.Rows.Add(new String[] { null, "Backward f_code", backwardFCodeValue});
+            appendKV("Full PEL Forward Vector", fullPELForwardVectorValue);
+            appendKV("Forward f_code", forwardFCodeValue);
+            appendKV("Full PEL Backward Vector", fullPELBackwardVectorValue);
+            appendKV("Backward f_code", backwardFCodeValue);
         }
 
         private void appendObjectDisplay(MPEG1GOP gop)
         {
-            _dataGridView.Rows.Add(new String[] { null, "Drop Frame Flag", gop.DropFrame ? "True" : "False" });
-            _dataGridView.Rows.Add(new String[] { null, "Timestamp HMS", String.Format("{0:d02}:{1:d02}:{2:d02}", gop.Hour, gop.Minute, gop.Second) });
-            _dataGridView.Rows.Add(new String[] { null, "Timestamp Frame", gop.Frame.ToString() });
-            _dataGridView.Rows.Add(new String[] { null, "Closed", gop.Closed ? "Yes" : "No" });
-            _dataGridView.Rows.Add(new String[] { null, "Broken", gop.Broken ? "Yes" : "No" });
+            appendKV("Drop Frame Flag", gop.DropFrame ? "True" : "False" );
+            appendKV("Timestamp", String.Format("{0:d02}:{1:d02}:{2:d02} Frame #{3:0}", gop.Hour, gop.Minute, gop.Second, gop.Frame));
+            appendKV("Closed", gop.Closed ? "Yes" : "No" );
+            appendKV("Broken", gop.Broken ? "Yes" : "No" );
         }
 
         private void appendObjectDisplay(MPEG1Sequence sequence)
         {
-            _dataGridView.Rows.Add(new String[] { null, "Horizontal Size", sequence.HorizontalSize.ToString() });
-            _dataGridView.Rows.Add(new String[] { null, "Vertical Size", sequence.VerticalSize.ToString() });
-            _dataGridView.Rows.Add(new String[] { null, "Aspect Ratio", String.Format("{0:d02}: {1:0.0000}", sequence.AspectRatioCode, sequence.AspectRatio) });
-            _dataGridView.Rows.Add(new String[] { null, "Frame Rate", String.Format("{0:d02}: {1:0.000}", sequence.FrameRateCode, sequence.FrameRate) });
-            _dataGridView.Rows.Add(new String[] { null, "Bitrate", sequence.Bitrate.ToString() });
-            _dataGridView.Rows.Add(new String[] { null, "VBV Buffer Size", sequence.VBVBufferSize.ToString() });
-            _dataGridView.Rows.Add(new String[] { null, "Constrained Parameters", sequence.ConstrainedParameters ? "Yes" : "No" });
-            _dataGridView.Rows.Add(new String[] { null, "Load Intra Quantizer Matrix", sequence.HasCustomIntraQuantizerMatrix ? "Yes" : "No" });
-            _dataGridView.Rows.Add(new String[] { null, "Load Non-Intra Quantizer Matrix", sequence.HasCustomNonIntraQuantizerMatrix ? "Yes" : "No" });
+            appendKV("Horizontal Size", sequence.HorizontalSize);
+            appendKV("Vertical Size", sequence.VerticalSize);
+            appendKV("Aspect Ratio", String.Format("{0:d02}: {1:0.0000}", sequence.AspectRatioCode, sequence.AspectRatio));
+            appendKV("Frame Rate", String.Format("{0:d02}: {1:0.000}", sequence.FrameRateCode, sequence.FrameRate));
+            appendKV("Bitrate", sequence.Bitrate);
+            appendKV("VBV Buffer Size", sequence.VBVBufferSize);
+            appendKV("Constrained Parameters", sequence.ConstrainedParameters ? "Yes" : "No");
+            appendKV("Load Intra Quantizer Matrix", sequence.HasCustomIntraQuantizerMatrix ? "Yes" : "No");
+            appendKV("Load Non-Intra Quantizer Matrix", sequence.HasCustomNonIntraQuantizerMatrix ? "Yes" : "No");
         }
 
     }

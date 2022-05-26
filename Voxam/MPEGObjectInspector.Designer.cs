@@ -48,7 +48,6 @@ namespace Voxam
         private void InitializeComponent()
         {
             this._dataGridView = new System.Windows.Forms.DataGridView();
-            this.colType = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colField = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this._dataGridView)).BeginInit();
@@ -62,7 +61,6 @@ namespace Voxam
             this._dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this._dataGridView.ColumnHeadersVisible = false;
             this._dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.colType,
             this.colField,
             this.colValue});
             this._dataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -75,31 +73,23 @@ namespace Voxam
             this._dataGridView.Size = new System.Drawing.Size(680, 843);
             this._dataGridView.TabIndex = 0;
             // 
-            // colType
-            // 
-            this.colType.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.colType.FillWeight = 1F;
-            this.colType.HeaderText = "Type";
-            this.colType.MinimumWidth = 8;
-            this.colType.Name = "colType";
-            this.colType.ReadOnly = true;
-            this.colType.Width = 8;
-            // 
             // colField
             // 
+            this.colField.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colField.FillWeight = 1F;
             this.colField.HeaderText = "Field";
             this.colField.MinimumWidth = 8;
             this.colField.Name = "colField";
             this.colField.ReadOnly = true;
-            this.colField.Width = 150;
+            this.colField.Width = 8;
             // 
             // colValue
             // 
+            this.colValue.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.colValue.HeaderText = "Value";
             this.colValue.MinimumWidth = 8;
             this.colValue.Name = "colValue";
             this.colValue.ReadOnly = true;
-            this.colValue.Width = 150;
             // 
             // MPEGObjectInspector
             // 
@@ -108,7 +98,6 @@ namespace Voxam
             this.ClientSize = new System.Drawing.Size(680, 843);
             this.Controls.Add(this._dataGridView);
             this.DoubleBuffered = true;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "MPEGObjectInspector";
@@ -121,7 +110,6 @@ namespace Voxam
         #endregion
 
         private System.Windows.Forms.DataGridView _dataGridView;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colType;
         private System.Windows.Forms.DataGridViewTextBoxColumn colField;
         private System.Windows.Forms.DataGridViewTextBoxColumn colValue;
     }
