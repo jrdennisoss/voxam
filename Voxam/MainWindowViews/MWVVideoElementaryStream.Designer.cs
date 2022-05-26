@@ -48,8 +48,11 @@ namespace Voxam
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this._pbPreview = new System.Windows.Forms.PictureBox();
             this._pictureStream = new Voxam.PictureStream();
+            this._btnPlayPause = new System.Windows.Forms.Button();
+            this._playTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this._pbPreview)).BeginInit();
             this.SuspendLayout();
             // 
@@ -96,10 +99,25 @@ namespace Voxam
             this._pictureStream.TabIndex = 0;
             this._pictureStream.PictureStreamObjectClickEvent += new Voxam.PictureStream.PictureStreamObjectClickEventHandler(this._pictureStream_MPEG1ObjectClickEvent);
             // 
+            // _btnPlayPause
+            // 
+            this._btnPlayPause.Location = new System.Drawing.Point(3, 74);
+            this._btnPlayPause.Name = "_btnPlayPause";
+            this._btnPlayPause.Size = new System.Drawing.Size(104, 45);
+            this._btnPlayPause.TabIndex = 2;
+            this._btnPlayPause.Text = "Play";
+            this._btnPlayPause.UseVisualStyleBackColor = true;
+            this._btnPlayPause.Click += new System.EventHandler(this._btnPlayPause_Click);
+            // 
+            // _playTimer
+            // 
+            this._playTimer.Tick += new System.EventHandler(this._playTimer_Tick);
+            // 
             // MWVVideoElementaryStream
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this._btnPlayPause);
             this.Controls.Add(this._pbPreview);
             this.Controls.Add(this._pictureStream);
             this.DoubleBuffered = true;
@@ -116,5 +134,7 @@ namespace Voxam
 
         private PictureStream _pictureStream;
         private System.Windows.Forms.PictureBox _pbPreview;
+        private System.Windows.Forms.Button _btnPlayPause;
+        private System.Windows.Forms.Timer _playTimer;
     }
 }

@@ -210,6 +210,8 @@ namespace Voxam
             }
             _pbPreview.Top = 0;
             _pbPreview.Left = this.ClientRectangle.Width - _pbPreview.Width;
+
+            _btnPlayPause.Top = _pictureStream.Top - _btnPlayPause.Height - 5;
         }
 
         private void MWVVideoElementaryStream_VisibleChanged(object sender, EventArgs e)
@@ -271,6 +273,24 @@ namespace Voxam
             if (_pictureStream.SelectedPictureIndex >= _pictureStream.PictureCount) _pictureStream.SelectedPictureIndex = _pictureStream.PictureCount - 1;
             displaySelectedPicture();
             _pictureStream.SetFocusToIndex(_pictureStream.SelectedPictureIndex);
+        }
+
+
+        //
+        //play/pause stuff...
+        //
+        private void _btnPlayPause_Click(object sender, EventArgs e)
+        {
+            _playTimer.Enabled = !_playTimer.Enabled;
+            _btnPlayPause.Text = _playTimer.Enabled ? "Pause" : "Play";
+            _playTimer.Interval = 32; //unhardcode me!!
+        }
+
+        private void _playTimer_Tick(object sender, EventArgs e)
+        {
+            MoveSelectedPicture(1);
+            if (_pictureStream.SelectedPictureIndex < 0) _btnPlayPause_Click(sender, null);
+            if (_pictureStream.SelectedPictureIndex >= (_pictureStream.PictureCount-1)) _btnPlayPause_Click(sender, null);
         }
     }
 }
