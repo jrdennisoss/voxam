@@ -108,9 +108,21 @@ namespace Voxam
             MWVVideoElementaryStream_Resize(this, null);
         }
 
+        private ReelMagicVideoConverterSettings _reelMagicVideoConverterSettings = null;
         private void mnuReelMagicVideoConverterSettings_Click(object sender, EventArgs e)
         {
-            //
+            if (_reelMagicVideoConverterSettings != null)
+                if (_reelMagicVideoConverterSettings.IsDisposed) _reelMagicVideoConverterSettings = null;
+            if (_reelMagicVideoConverterSettings == null)
+                _reelMagicVideoConverterSettings = new ReelMagicVideoConverterSettings(_masterSourceProvider.VideoConverterSettings);
+            try
+            {
+                _reelMagicVideoConverterSettings.Show(this);
+            }
+            catch
+            {
+                _reelMagicVideoConverterSettings.Focus();
+            }
         }
 
 
@@ -162,6 +174,7 @@ namespace Voxam
             _pbPreview.Image = null;
             _pictureStream.SourceData = null;
             _decoder.Reset();
+            if (_reelMagicVideoConverterSettings != null) _reelMagicVideoConverterSettings.Settings = (_masterSourceProvider != null) ? _masterSourceProvider.VideoConverterSettings : null;
             UpdateSourceDataIfVisible();
         }
         private void UpdateSourceDataIfVisible()
