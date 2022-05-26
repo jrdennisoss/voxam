@@ -83,6 +83,7 @@ namespace Voxam
             {
                 new ToolStripMenuItem("ReelMagic Video Converter Settings", null, mnuReelMagicVideoConverterSettings_Click),
                 new ToolStripMenuItem("View Decoder Picture Buffers", null, mnuViewDecoderPictureBuffers_Click),
+                new ToolStripMenuItem("Picture Object Inspector", null, mnuPictureObjectInspector_Click),
                 new ToolStripSeparator(),
                 _mnuManualDecoderFeedingEnabled,
                 new ToolStripSeparator(),
@@ -92,7 +93,6 @@ namespace Voxam
                 _mnuShowSequences,
             };
         }
-
         private void _mnuShowPicstureStreamItem_Clicked(object sender, EventArgs e)
         {
             ToolStripMenuItem item = sender as ToolStripMenuItem;
@@ -144,6 +144,24 @@ namespace Voxam
             }
         }
 
+        private MPEGObjectInspector _objectInspector = null;
+        private void mnuPictureObjectInspector_Click(object sender, EventArgs e)
+        {
+            if (_objectInspector != null)
+                if (_objectInspector.IsDisposed) _objectInspector = null;
+            if (_objectInspector == null)
+                _objectInspector = new MPEGObjectInspector(_pictureStream.SelectedPicture);
+            try
+            {
+                _objectInspector.Show(this);
+            }
+            catch
+            {
+                _objectInspector.Focus();
+            }
+        }
+
+
 
         //IMainWindowView Stuff
         public MasterSourceProvider MasterSourceProvider 
@@ -175,6 +193,7 @@ namespace Voxam
             _pictureStream.SourceData = null;
             _decoder.Reset();
             if (_reelMagicVideoConverterSettings != null) _reelMagicVideoConverterSettings.Settings = (_masterSourceProvider != null) ? _masterSourceProvider.VideoConverterSettings : null;
+            if (_objectInspector != null) _objectInspector.InspectedObject = null;
             UpdateSourceDataIfVisible();
         }
         private void UpdateSourceDataIfVisible()
@@ -226,6 +245,7 @@ namespace Voxam
         {
             var picture = _pictureStream.SelectedPicture;
             if (picture == null) goto failed;
+            if (_objectInspector != null) _objectInspector.InspectedObject = picture;
 
             if (!_decoder.Decode(picture)) goto failed;
             var img = _decoder.DecodedPicture;
