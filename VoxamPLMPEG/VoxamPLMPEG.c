@@ -56,6 +56,8 @@ struct vpm_vesdec {
     plm_buffer_t plm_buffer;
     plm_video_t plm_video;
     plm_frame_t* last_decoded_frame;
+
+    int force_has_reference_frame;
 };
 
 VEXPORT vpm_vesdec_handle
@@ -83,7 +85,14 @@ vpm_vesdec_reset(vpm_vesdec_handle vesdec) {
     vpm_vesdec_set_mem_buffer(vesdec, NULL, 0, 0);
     vesdec->plm_video.buffer = &vesdec->plm_buffer;
     vesdec->plm_video.start_code = -1;
+    vesdec->plm_video.decode_tag = -1;
+    vesdec->plm_video.frame_current.decode_tag = -1;
+    vesdec->plm_video.frame_forward.decode_tag = -1;
+    vesdec->plm_video.frame_backward.decode_tag = -1;
+
     vesdec->last_decoded_frame = NULL;
+
+    vesdec->force_has_reference_frame = -1;
 }
 
 VEXPORT int
@@ -210,7 +219,29 @@ vpm_vesdec_get_frames_decoded(vpm_vesdec_handle vesdec) {
 }
 
 VEXPORT int
-vpm_vesdec_feed_decoder(vpm_vesdec_handle vesdec, const int force_has_reference_frame, int max_iterations, const void* const buf, const unsigned off, const unsigned len) {
+vpm_vesdec_get_decoder_feed_parameter(vpm_vesdec_handle vesdec, const int feed_param_type) {
+    if (vesdec == NULL) return -1;
+    switch (feed_param_type)
+    {
+    case VPM_VESDEC_FEEDPARAM_DECODE_TAG: return vesdec->plm_video.decode_tag;
+    case VPM_VESDEC_FEEDPARAM_FORCE_HAS_REFERENCE_FRAME: return vesdec->force_has_reference_frame;
+    }
+    return -1;
+}
+
+VEXPORT int
+vpm_vesdec_set_decoder_feed_parameter(vpm_vesdec_handle vesdec, const int feed_param_type, const int value) {
+    if (vesdec == NULL) return -1;
+    switch (feed_param_type)
+    {
+    case VPM_VESDEC_FEEDPARAM_DECODE_TAG: return vesdec->plm_video.decode_tag = value;
+    case VPM_VESDEC_FEEDPARAM_FORCE_HAS_REFERENCE_FRAME: return vesdec->force_has_reference_frame = value;
+    }
+    return -1;
+}
+
+VEXPORT int
+vpm_vesdec_feed_decoder(vpm_vesdec_handle vesdec, int max_iterations, const void* const buf, const unsigned off, const unsigned len) {
     int rv;
     
     if (vesdec == NULL) return -1;
@@ -223,8 +254,8 @@ vpm_vesdec_feed_decoder(vpm_vesdec_handle vesdec, const int force_has_reference_
     vpm_vesdec_set_mem_buffer(vesdec, buf, off, len);
     while (max_iterations && !plm_buffer_has_ended(&vesdec->plm_buffer)) {
         if (max_iterations > 0) --max_iterations;
-        if (force_has_reference_frame >= 0)
-            vesdec->plm_video.has_reference_frame = force_has_reference_frame ? TRUE : FALSE;
+        if (vesdec->force_has_reference_frame >= 0)
+            vesdec->plm_video.has_reference_frame = vesdec->force_has_reference_frame ? TRUE : FALSE;
         vesdec->last_decoded_frame = plm_video_decode(&vesdec->plm_video);
         if (vesdec->last_decoded_frame == NULL) break;
         ++rv;

@@ -221,6 +221,7 @@ typedef struct {
 	double time;
 	unsigned int width;
 	unsigned int height;
+	int decode_tag;
 	plm_plane_t y;
 	plm_plane_t cr;
 	plm_plane_t cb;
@@ -2649,6 +2650,7 @@ typedef struct plm_video_t {
 
 	plm_video_decode_picture_header_callback decode_picture_header_callback;
 	void *decode_picture_header_callback_user_data;
+	int decode_tag;
 } plm_video_t;
 
 static inline uint8_t plm_clamp(int n) {
@@ -2970,6 +2972,9 @@ void plm_video_decode_picture(plm_video_t *self) {
 	) {
 		self->frame_forward = self->frame_backward;
 	}
+
+	// Tag the decode operation
+	self->frame_current.decode_tag = self->decode_tag;
 
 
 	// Find first slice start code; skip extension and user data

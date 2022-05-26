@@ -45,7 +45,12 @@ VEXPORT unsigned vpm_vesdec_get_mb_height(vpm_vesdec_handle vesdec);
 VEXPORT unsigned vpm_vesdec_get_frames_decoded(vpm_vesdec_handle vesdec);
 
 
-VEXPORT int vpm_vesdec_feed_decoder(vpm_vesdec_handle vesdec, const int force_has_reference_frame, int max_iterations, const void* const buf, const unsigned off, const unsigned len);
+#define VPM_VESDEC_FEEDPARAM_DECODE_TAG 0
+#define VPM_VESDEC_FEEDPARAM_FORCE_HAS_REFERENCE_FRAME 1
+VEXPORT int vpm_vesdec_get_decoder_feed_parameter(vpm_vesdec_handle vesdec, const int feed_param_type);
+VEXPORT int vpm_vesdec_set_decoder_feed_parameter(vpm_vesdec_handle vesdec, const int feed_param_type, const int value);
+VEXPORT int vpm_vesdec_feed_decoder(vpm_vesdec_handle vesdec, int max_iterations, const void* const buf, const unsigned off, const unsigned len);
+
 
 #define VPM_VESDEC_PICFORMAT_YUV 0
 #define VPM_VESDEC_PICFORMAT_RGB 1

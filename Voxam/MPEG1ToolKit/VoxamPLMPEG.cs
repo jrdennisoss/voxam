@@ -36,6 +36,8 @@ namespace Voxam.MPEG1ToolKit
         {
             private const string DLL_FILENAME = "VoxamPLMPEG.dll";
 
+            public const int VPM_VESDEC_FEEDPARAM_DECODE_TAG = 0;
+            public const int VPM_VESDEC_FEEDPARAM_FORCE_HAS_REFERENCE_FRAME = 1;
 
             public const int VPM_VESDEC_PICFORMAT_YUV = 0;
             public const int VPM_VESDEC_PICFORMAT_RGB = 1;
@@ -77,14 +79,16 @@ namespace Voxam.MPEG1ToolKit
             internal extern static uint vpm_vesdec_get_frames_decoded(IntPtr vesdec);
 
 
+            [DllImport(DLL_FILENAME, CallingConvention = CallingConvention.Cdecl)]
+            internal extern static int vpm_vesdec_get_decoder_feed_parameter(IntPtr vesdec, int feed_param_type);
+            [DllImport(DLL_FILENAME, CallingConvention = CallingConvention.Cdecl)]
+            internal extern static int vpm_vesdec_set_decoder_feed_parameter(IntPtr vesdec, int feed_param_type, int value);
+            [DllImport(DLL_FILENAME, CallingConvention = CallingConvention.Cdecl)]
+            internal extern static int vpm_vesdec_feed_decoder(IntPtr vesdec, int max_iterations, byte[] buf, uint off, uint len);
+            [DllImport(DLL_FILENAME, CallingConvention = CallingConvention.Cdecl)]
+            internal extern static int vpm_vesdec_feed_decoder(IntPtr vesdec, int max_iterations, IntPtr buf, uint off, uint len);
 
 
-            [DllImport(DLL_FILENAME, CallingConvention = CallingConvention.Cdecl)]
-            internal extern static int vpm_vesdec_feed_decoder(IntPtr vesdec, int force_has_reference_frame, int max_iterations,
-                byte[] buf, uint off, uint len);
-            [DllImport(DLL_FILENAME, CallingConvention = CallingConvention.Cdecl)]
-            internal extern static int vpm_vesdec_feed_decoder(IntPtr vesdec, int force_has_reference_frame, int max_iterations,
-                IntPtr buf, uint off, uint len);
             [DllImport(DLL_FILENAME, CallingConvention = CallingConvention.Cdecl)]
             internal extern static int vpm_vesdec_collect_picture_buffer(IntPtr vesdec, int picformat, int picbuf,
                 byte[] buf, uint off, uint len);
@@ -133,14 +137,33 @@ namespace Voxam.MPEG1ToolKit
 
             public int FramesDecoded { get { return (int)DLL.vpm_vesdec_get_frames_decoded(_vesdec); } }
 
-            public int FeedDecoder(byte[] buf, int off, int len, int max_iterations = -1, int force_has_reference_frame = -1)
+
+            //
+            // Decoder feeding methods...
+            //
+            public int DecodeTag
+            {
+                get => DLL.vpm_vesdec_get_decoder_feed_parameter(_vesdec, DLL.VPM_VESDEC_FEEDPARAM_DECODE_TAG);
+                set => DLL.vpm_vesdec_set_decoder_feed_parameter(_vesdec, DLL.VPM_VESDEC_FEEDPARAM_DECODE_TAG, value);
+            }
+            public int ForceHasReferenceFrame
+            {
+                get => DLL.vpm_vesdec_get_decoder_feed_parameter(_vesdec, DLL.VPM_VESDEC_FEEDPARAM_FORCE_HAS_REFERENCE_FRAME);
+                set => DLL.vpm_vesdec_set_decoder_feed_parameter(_vesdec, DLL.VPM_VESDEC_FEEDPARAM_FORCE_HAS_REFERENCE_FRAME, value);
+            }
+            public int FeedDecoder(byte[] buf, int off, int len, int max_iterations = -1)
             {
                 if (off < 0) return -1;
                 if (len < 0) return -1;
 
-                return DLL.vpm_vesdec_feed_decoder(_vesdec, force_has_reference_frame, max_iterations,
-                    buf, (uint)off, (uint)len);
+                return DLL.vpm_vesdec_feed_decoder(_vesdec, max_iterations, buf, (uint)off, (uint)len);
             }
+
+
+
+            //
+            // Picture collection methods...
+            //
 
             public enum PictureFormat
             {
@@ -233,44 +256,20 @@ namespace Voxam.MPEG1ToolKit
             public int DecodeSinglePicture(
                 byte[] outbuf, int outbufOff, int outbufLen,
                 PictureFormat pictureFormat,
-                byte[] inbuf, int inbufOff, int inbufLen,
-                int forceHasReferenceFrame = -1)
+                byte[] inbuf, int inbufOff, int inbufLen)
             {
-                if (FeedDecoder(inbuf, inbufOff, inbufLen, 1, forceHasReferenceFrame) != 1)
+                if (FeedDecoder(inbuf, inbufOff, inbufLen, 1) != 1)
                     return -1;
                 return CollectPictureBuffer(outbuf, outbufOff, outbufLen, pictureFormat, DecoderPictureBuffer.LastFeed);
             }
 
-            public int DecodeSinglePicture(
-                 byte[] outbuf, int outbufOff, int outbufLen,
-                 PictureFormat pictureFormat,
-                 byte[] inbuf, int inbufOff, int inbufLen,
-                 bool forceHasReferenceFrame)
-            {
-                return DecodeSinglePicture(outbuf, outbufOff, outbufLen,
-                    pictureFormat,
-                    inbuf, inbufOff, inbufLen,
-                    forceHasReferenceFrame ? 1 : 0);
-            }
-
             public bool DecodeSinglePicture(
                 Bitmap output,
-                byte[] inbuf, int inbufOff, int inbufLen,
-                int forceHasReferenceFrame = -1)
+                byte[] inbuf, int inbufOff, int inbufLen)
             {
-                if (FeedDecoder(inbuf, inbufOff, inbufLen, 1, forceHasReferenceFrame) != 1)
+                if (FeedDecoder(inbuf, inbufOff, inbufLen, 1) != 1)
                     return false;
-
                 return CollectPictureBuffer(output, DecoderPictureBuffer.LastFeed);
-            }
-            public bool DecodeSinglePicture(
-                Bitmap output,
-                byte[] inbuf, int inbufOff, int inbufLen,
-                bool forceHasReferenceFrame)
-            {
-                return DecodeSinglePicture(output,
-                    inbuf, inbufOff, inbufLen,
-                    forceHasReferenceFrame ? 1 : 0);
             }
 
 
@@ -375,14 +374,13 @@ namespace Voxam.MPEG1ToolKit
                     this.VideoConverterPictureCollection[picture]?.PatchPicture(picture, picbuf.Buffer, 0, picbuf.Length);
                 }
 
-                if (_vesdec.FramesDecoded == 0)
+                switch (_vesdec.FramesDecoded)
                 {
-                    if (!_vesdec.DecodeSinglePicture(_decodedPicture, picbuf.Buffer, 0, picbuf.Length)) return false;
+                    case 0: _vesdec.ForceHasReferenceFrame = -1; break;
+                    case 1: _vesdec.ForceHasReferenceFrame = 1; break;
                 }
-                else
-                {
-                    if (!_vesdec.DecodeSinglePicture(_decodedPicture, picbuf.Buffer, 0, picbuf.Length, true)) return false;
-                }
+
+                if (!_vesdec.DecodeSinglePicture(_decodedPicture, picbuf.Buffer, 0, picbuf.Length)) return false;
                 _lastDecodedPictureBufferType = _vesdec.LastFeedPictureBufferType;
                 if (PictureDecodedEvent != null) PictureDecodedEvent(this);
 
