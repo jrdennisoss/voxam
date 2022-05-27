@@ -90,54 +90,65 @@ namespace Voxam.MPEG1ToolKit.ReelMagic
             return _cachedFirstTruthfulPicture;
         }
 
-        public void PatchPicture(MPEG1Picture picture, byte[] buf, int off, int len)
+        public MPEG1Picture PatchPicture(MPEG1Picture picture, byte[] buf, int off, int len)
         {
-            //note: this routine expects buf[off] to be positioned at 00 00 01 00 ...
+            if (len < 9) return picture;
+
+            if (this._settings.DecodeMode == VideoConverterSettings.Mode.CUSTOM)
+            {
+                _settings.InvokeCustomPatchPictureEvent(this, picture, buf, off, len);
+                return picture;
+            }
+
+            var patchedPicture = PatchPicture(picture);
+            if (patchedPicture == picture) return picture;
+
+            writePFCode(buf, off, len, patchedPicture.ForwardFCode);
+            if (patchedPicture.Type == MPEG1Picture.PictureType.Bipredictive)
+                writeBFCode(buf, off, len, patchedPicture.BackwardFCode);
+            return patchedPicture;
+        }
+
+        public MPEG1Picture PatchPicture(MPEG1Picture picture)
+        {
+            if ((picture.Type != MPEG1Picture.PictureType.Predictive) && (picture.Type != MPEG1Picture.PictureType.Bipredictive)) return picture;
+
             switch (_settings.DecodeMode)
             {
-                case VideoConverterSettings.Mode.SEEK_TRUTHFUL_FCODE:
-                    patchPictureSeekTruthfulFCode(picture, buf, off, len);
-                    return;
-                case VideoConverterSettings.Mode.APPLY_STATIC_FCODE:
-                    patchPictureApplyStaticFCode(picture, buf, off, len);
-                    return;
-                case VideoConverterSettings.Mode.CUSTOM:
-                    _settings.InvokeCustomPatchPictureEvent(this, picture, buf, off, len);
-                    return;
+                case VideoConverterSettings.Mode.SEEK_TRUTHFUL_FCODE: return patchPictureSeekTruthfulFCode(picture);
+                case VideoConverterSettings.Mode.APPLY_STATIC_FCODE:  return patchPictureApplyStaticFCode(picture);
             }
+            return picture;
         }
-        private void patchPictureSeekTruthfulFCode(MPEG1Picture picture, byte[] buf, int off, int len)
+        private MPEG1Picture patchPictureSeekTruthfulFCode(MPEG1Picture picture)
         {
-            if (len < 9) return;
             MPEG1Picture pictureOfTruth = seekCachedFirstTruthfulPicture();
-            if (pictureOfTruth == null) return;
+            if (pictureOfTruth == null) return picture;
 
-            byte fcodeOfTruth = pictureOfTruth.ForwardFCode;
-
-            switch (picture.Type)
-            {
-                case MPEG1Picture.PictureType.Predictive:
-                    writePFCode(buf, off, len, fcodeOfTruth);
-                    break;
-                case MPEG1Picture.PictureType.Bipredictive:
-                    writeBFCodes(buf, off, len, fcodeOfTruth, fcodeOfTruth);
-                    break;
-            }
+            return new MPEG1Picture(null, null,
+                picture.TemporalSequenceNumber,
+                picture.Type,
+                picture.VBVDelay,
+                picture.FullPELForwardVector,
+                pictureOfTruth.ForwardFCode,     //PATCH
+                picture.FullPELBackwardVector,
+                pictureOfTruth.ForwardFCode      //PATCH
+            );
         }
 
-        private void patchPictureApplyStaticFCode(MPEG1Picture picture, byte[] buf, int off, int len)
+        private MPEG1Picture patchPictureApplyStaticFCode(MPEG1Picture picture)
         {
-            if (len < 9) return;
-
-            switch (picture.Type)
-            {
-                case MPEG1Picture.PictureType.Predictive:
-                    writePFCode(buf, off, len, _settings.StaticPForwardFCode);
-                    break;
-                case MPEG1Picture.PictureType.Bipredictive:
-                    writeBFCodes(buf, off, len, _settings.StaticBForwardFCode, _settings.StaticBBackwardFCode);
-                    break;
-            }
+            var forwardFCode = (picture.Type == MPEG1Picture.PictureType.Predictive) ? _settings.StaticPForwardFCode : _settings.StaticBForwardFCode;
+            var backwardFCode = _settings.StaticBBackwardFCode;
+            return new MPEG1Picture(null, null,
+                    picture.TemporalSequenceNumber,
+                    picture.Type,
+                    picture.VBVDelay,
+                    picture.FullPELForwardVector,
+                    forwardFCode,                   //PATCH
+                    picture.FullPELBackwardVector,
+                    backwardFCode                   // PATCH
+                    );
         }
 
         private static void writePFCode(byte[] buf, int off, int len, int forwardValue)
@@ -148,9 +159,8 @@ namespace Voxam.MPEG1ToolKit.ReelMagic
             buf[off + 7] |= (byte)(forwardValue >> 1);
             buf[off + 8] |= (byte)((forwardValue << 7) & 0x80);
         }
-        private static void writeBFCodes(byte[] buf, int off, int len, int forwardValue, int backwardValue)
+        private static void writeBFCode(byte[] buf, int off, int len, int backwardValue)
         {
-            writePFCode(buf, off, len, forwardValue);
             backwardValue &= 0x07;
             buf[off + 8] &= 0xC7;
             buf[off + 8] |= (byte)(backwardValue << 3);
