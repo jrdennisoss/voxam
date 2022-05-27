@@ -133,7 +133,6 @@ namespace Voxam
             // TODO: should thie be deferred to if visible ?
             //
             _dataGridView.RowCount = _masterSourceProvider.Pictures.Count;
-            if (_dataGridView.RowCount > 0) _dataGridView.FirstDisplayedScrollingRowIndex = 0;
         }
 
         private void _dataGridView_CellValueNeeded(object sender, DataGridViewCellValueEventArgs e) => e.Value = GetCellValue(e.RowIndex, e.ColumnIndex);
