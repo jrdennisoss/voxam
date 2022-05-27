@@ -47,7 +47,19 @@ namespace Voxam.MPEG1ToolKit.Objects
         public bool HaveDTS { get { return DTS != INVALID_PTSDTS; } }
 
 
-        public string Name => "MPEG-1 PES Packet";
+        public string Name
+        {
+            get
+            {
+                var typeStr = "???";
+                if (IsVideoType)          typeStr = "Video";
+                else if (IsAudioType)     typeStr = "Audio";
+                else if (IsPrivate1Type)  typeStr = "Private Type 1";
+                else if (IsPrivate2Type)  typeStr = "Private Type 2";
+                else if (IsPaddingType)   typeStr = "Padding";
+                return String.Format("MPEG-1 PES {0} Packet", typeStr);
+            }
+        }
         public IMPEG1Object Parent => _parent;
         public MPEG1ObjectSource Source => _source;
         public byte StreamIdType => _streamIdType;
