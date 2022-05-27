@@ -61,6 +61,7 @@ namespace Voxam
         private void masterSourceProviderUpdated()
         {
             _objectStream.SourceData = null;
+            _dgv.RowCount = 0;
             UpdateSourceDataIfVisible();
         }
         private void UpdateSourceDataIfVisible()
@@ -73,6 +74,9 @@ namespace Voxam
             if (_masterSourceProvider.Objects == _objectStream.SourceData) return;
             _objectStream.SourceData = _masterSourceProvider.Objects;
             _objectStream.SelectedObjectIndex = -1;
+
+            _dgv.RowCount = _masterSourceProvider.Objects.Count;
+            _dgv.Refresh();
         }
         private void MWVSystem_Resize(object sender, EventArgs e)
         {
@@ -80,11 +84,42 @@ namespace Voxam
             _objectStream.Width = this.ClientRectangle.Width;
             _objectStream.Height = _objectStream.MaximumHeight;
             _objectStream.Top = this.ClientRectangle.Height - _objectStream.Height;
-        }
 
-        private void MWVSystem_VisibleChanged(object sender, EventArgs e)
+            _dgv.Left = 0;
+            _dgv.Width = this.ClientRectangle.Width;
+            _dgv.Top = 0;
+            _dgv.Height = _objectStream.Top;
+        }
+        private void MWVSystem_VisibleChanged(object sender, EventArgs e) => UpdateSourceDataIfVisible();
+
+
+
+
+        private void _dgv_CellValueNeeded(object sender, DataGridViewCellValueEventArgs e) => e.Value = GetCellValue(e.RowIndex, e.ColumnIndex);
+        private string GetCellValue(int row, int col)
         {
-            UpdateSourceDataIfVisible();
+            if (_masterSourceProvider == null) return "";
+            if (row >= _masterSourceProvider.Objects.Count) return "";
+            var obj = _masterSourceProvider.Objects[row];
+            switch (col)
+            {
+                case 0: //stream id type
+                    return String.Format("{0:X02}", obj.StreamIdType);
+                case 1: //name
+                    return obj.Name;
+                case 2: //offset
+                    if (obj.Source == null) return "";
+                    return obj.Source.IteratorSourceStreamPosition.ToString();
+                case 3: //length
+                    //
+                    // TODO: this is horrible... should fix this...
+                    //
+                    if ((row + 1) >= _masterSourceProvider.Objects.Count) return ""; //
+                    var nextObj = _masterSourceProvider.Objects[row + 1];
+                    if (nextObj.Source == null) return "";
+                    return (nextObj.Source.IteratorSourceStreamPosition - obj.Source.IteratorSourceStreamPosition).ToString();
+            }
+            return "";
         }
     }
 }
