@@ -80,6 +80,12 @@
     <Compile Include="MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="MainWindowViews\MVWReelMagicTransformationViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MainWindowViews\MVWReelMagicTransformationViewer.Designer.cs">
+      <DependentUpon>MVWReelMagicTransformationViewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainWindowViews\MWVSystem.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -165,6 +171,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainWindowViews\MVWReelMagicTransformationViewer.resx">
+      <DependentUpon>MVWReelMagicTransformationViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainWindowViews\MWVStart.resx">
       <DependentUpon>MWVStart.cs</DependentUpon>

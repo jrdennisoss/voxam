@@ -55,14 +55,15 @@ namespace Voxam
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this._mwvToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutVoxamToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this._mwvToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._menubar.SuspendLayout();
             this.SuspendLayout();
             // 
             // _menubar
             // 
+            this._menubar.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
             this._menubar.ImageScalingSize = new System.Drawing.Size(24, 24);
             this._menubar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
@@ -71,7 +72,7 @@ namespace Voxam
             this.helpToolStripMenuItem});
             this._menubar.Location = new System.Drawing.Point(0, 0);
             this._menubar.Name = "_menubar";
-            this._menubar.Size = new System.Drawing.Size(899, 24);
+            this._menubar.Size = new System.Drawing.Size(1514, 54);
             this._menubar.TabIndex = 0;
             // 
             // fileToolStripMenuItem
@@ -82,69 +83,69 @@ namespace Voxam
             this.toolStripMenuItem1,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(54, 50);
             this.fileToolStripMenuItem.Text = "&File";
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(228, 34);
             this.openToolStripMenuItem.Text = "&Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // scanDirectoryToolStripMenuItem
             // 
             this.scanDirectoryToolStripMenuItem.Name = "scanDirectoryToolStripMenuItem";
-            this.scanDirectoryToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.scanDirectoryToolStripMenuItem.Size = new System.Drawing.Size(228, 34);
             this.scanDirectoryToolStripMenuItem.Text = "Scan Directory";
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.ForeColor = System.Drawing.SystemColors.ControlText;
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(147, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(225, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(228, 34);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // viewToolStripMenuItem
             // 
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(65, 50);
             this.viewToolStripMenuItem.Text = "&View";
+            // 
+            // _mwvToolStripMenuItem
+            // 
+            this._mwvToolStripMenuItem.Name = "_mwvToolStripMenuItem";
+            this._mwvToolStripMenuItem.Size = new System.Drawing.Size(117, 50);
+            this._mwvToolStripMenuItem.Text = "MWVMenu";
             // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.aboutVoxamToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(65, 50);
             this.helpToolStripMenuItem.Text = "&Help";
             // 
             // aboutVoxamToolStripMenuItem
             // 
             this.aboutVoxamToolStripMenuItem.Name = "aboutVoxamToolStripMenuItem";
-            this.aboutVoxamToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.aboutVoxamToolStripMenuItem.Size = new System.Drawing.Size(223, 34);
             this.aboutVoxamToolStripMenuItem.Text = "&About Voxam";
             this.aboutVoxamToolStripMenuItem.Click += new System.EventHandler(this.aboutVoxamToolStripMenuItem_Click);
-            // 
-            // _mwvToolStripMenuItem
-            // 
-            this._mwvToolStripMenuItem.Name = "_mwvToolStripMenuItem";
-            this._mwvToolStripMenuItem.Size = new System.Drawing.Size(79, 20);
-            this._mwvToolStripMenuItem.Text = "MWVMenu";
             // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(899, 558);
+            this.ClientSize = new System.Drawing.Size(1000, 750);
             this.Controls.Add(this._menubar);
             this.DoubleBuffered = true;
             this.MainMenuStrip = this._menubar;
