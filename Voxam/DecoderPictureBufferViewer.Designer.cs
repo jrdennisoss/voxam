@@ -55,6 +55,9 @@ namespace Voxam
             this._lblBackward = new System.Windows.Forms.Label();
             this._lblPointer = new System.Windows.Forms.Label();
             this._lblNoBuffers = new System.Windows.Forms.Label();
+            this._lblForwardDecodeTag = new System.Windows.Forms.Label();
+            this._lblCurrentDecodeTag = new System.Windows.Forms.Label();
+            this._lblBackwardDecodeTag = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this._pbForward)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._pbCurrent)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._pbBackward)).BeginInit();
@@ -144,12 +147,51 @@ namespace Voxam
             this._lblNoBuffers.Text = "X";
             this._lblNoBuffers.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // _lblForwardDecodeTag
+            // 
+            this._lblForwardDecodeTag.AutoSize = true;
+            this._lblForwardDecodeTag.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._lblForwardDecodeTag.ForeColor = System.Drawing.Color.Yellow;
+            this._lblForwardDecodeTag.Location = new System.Drawing.Point(227, 242);
+            this._lblForwardDecodeTag.Name = "_lblForwardDecodeTag";
+            this._lblForwardDecodeTag.Size = new System.Drawing.Size(59, 20);
+            this._lblForwardDecodeTag.TabIndex = 8;
+            this._lblForwardDecodeTag.Text = "#1234";
+            this._lblForwardDecodeTag.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // _lblCurrentDecodeTag
+            // 
+            this._lblCurrentDecodeTag.AutoSize = true;
+            this._lblCurrentDecodeTag.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._lblCurrentDecodeTag.ForeColor = System.Drawing.Color.Yellow;
+            this._lblCurrentDecodeTag.Location = new System.Drawing.Point(262, 275);
+            this._lblCurrentDecodeTag.Name = "_lblCurrentDecodeTag";
+            this._lblCurrentDecodeTag.Size = new System.Drawing.Size(59, 20);
+            this._lblCurrentDecodeTag.TabIndex = 9;
+            this._lblCurrentDecodeTag.Text = "#1234";
+            this._lblCurrentDecodeTag.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // _lblBackwardDecodeTag
+            // 
+            this._lblBackwardDecodeTag.AutoSize = true;
+            this._lblBackwardDecodeTag.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._lblBackwardDecodeTag.ForeColor = System.Drawing.Color.Yellow;
+            this._lblBackwardDecodeTag.Location = new System.Drawing.Point(293, 304);
+            this._lblBackwardDecodeTag.Name = "_lblBackwardDecodeTag";
+            this._lblBackwardDecodeTag.Size = new System.Drawing.Size(59, 20);
+            this._lblBackwardDecodeTag.TabIndex = 10;
+            this._lblBackwardDecodeTag.Text = "#1234";
+            this._lblBackwardDecodeTag.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
             // DecoderPictureBufferViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(782, 343);
+            this.Controls.Add(this._lblBackwardDecodeTag);
+            this.Controls.Add(this._lblCurrentDecodeTag);
+            this.Controls.Add(this._lblForwardDecodeTag);
             this.Controls.Add(this._lblNoBuffers);
             this.Controls.Add(this._lblPointer);
             this.Controls.Add(this._lblBackward);
@@ -184,5 +226,8 @@ namespace Voxam
         private System.Windows.Forms.Label _lblBackward;
         private System.Windows.Forms.Label _lblPointer;
         private System.Windows.Forms.Label _lblNoBuffers;
+        private System.Windows.Forms.Label _lblForwardDecodeTag;
+        private System.Windows.Forms.Label _lblCurrentDecodeTag;
+        private System.Windows.Forms.Label _lblBackwardDecodeTag;
     }
 }

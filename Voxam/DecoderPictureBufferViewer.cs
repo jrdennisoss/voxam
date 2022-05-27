@@ -92,27 +92,33 @@ namespace Voxam
                 _pbCurrent.Top = _pbForward.Top = _pbBackward.Top = _lblCurrent.Bottom;
                 _pbCurrent.Width = _pbForward.Width = _pbBackward.Width = _pbCurrent.Image.Width;
                 _pbCurrent.Height = _pbForward.Height = _pbBackward.Height = _pbCurrent.Image.Height;
+                _lblCurrentDecodeTag.Top = _lblForwardDecodeTag.Top = _lblBackwardDecodeTag.Top = _pbCurrent.Bottom;
 
                 _pbForward.Left = 0;
                 _lblForward.Left = _pbForward.Left + (_pbForward.Width / 2) - (_lblForward.Width / 2);
+                _lblForwardDecodeTag.Left = _pbForward.Left;
 
                 _pbCurrent.Left = _pbForward.Right;
                 _lblCurrent.Left = _pbCurrent.Left + (_pbCurrent.Width / 2) - (_lblCurrent.Width / 2);
+                _lblCurrentDecodeTag.Left = _pbCurrent.Left;
 
                 _pbBackward.Left = _pbCurrent.Right;
                 _lblBackward.Left = _pbBackward.Left + (_pbBackward.Width / 2) - (_lblBackward.Width / 2);
+                _lblBackwardDecodeTag.Left = _pbBackward.Left;
+
 
                 _lblPointer.Top = _pbCurrent.Bottom;
 
                 this.Size = SizeFromClientSize(new Size(_pbBackward.Right, _lblPointer.Bottom));
 
-                updateCurrentPointerPosition();
+                _decoder_PictureDecodedEvent(this);
             }
             else
             {
                 //decoder is in an invalid state... lay things out accordingly...
                 _lblCurrent.Visible = _lblForward.Visible = _lblBackward.Visible = false;
                 _pbCurrent.Visible = _pbForward.Visible = _pbBackward.Visible = false;
+                _lblCurrentDecodeTag.Visible = _lblForwardDecodeTag.Visible = _lblBackwardDecodeTag.Visible = false;
                 _lblPointer.Visible = false;
 
                 _lblNoBuffers.Visible = true;
@@ -132,8 +138,18 @@ namespace Voxam
             _pbForward.Invalidate();
             _pbBackward.Invalidate();
             updateCurrentPointerPosition();
+  
+            updateDecodeTagLabel(_lblForwardDecodeTag, _decoder.ForwardPictureBufferDecodeTag);
+            updateDecodeTagLabel(_lblCurrentDecodeTag, _decoder.CurrentPictureBufferDecodeTag);
+            updateDecodeTagLabel(_lblBackwardDecodeTag, _decoder.BackwardPictureBufferDecodeTag);
         }
 
+
+        private void updateDecodeTagLabel(Label label, int value)
+        {
+            label.Visible = value >= 0;
+            label.Text = "#" + value.ToString();
+        }
 
         private void updateCurrentPointerPosition()
         {
