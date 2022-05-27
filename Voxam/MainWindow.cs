@@ -38,7 +38,6 @@ namespace Voxam
             get => _masterSourceProvider;
             set
             {
-                setViewMode(false);
                 foreach (var v in this.Controls)
                 {
                     var mwv = v as IMainWindowView;
@@ -117,6 +116,7 @@ namespace Voxam
             }
             else
             {
+                if (!(_activeView is MWVStart)) return;
                 foreach (var c in Controls)
                 {
                     if (c is MWVVideoElementaryStream)
