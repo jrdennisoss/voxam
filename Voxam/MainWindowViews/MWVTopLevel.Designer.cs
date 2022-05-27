@@ -20,7 +20,7 @@
 
 namespace Voxam
 {
-    partial class MWVSystem
+    partial class MWVTopLevel
     {
         /// <summary> 
         /// Required designer variable.

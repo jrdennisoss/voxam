@@ -57,7 +57,7 @@ namespace Voxam
             //construct and attach all MainWindowViews here...
             this.SuspendLayout();
             putView(new MWVStart(_styleScheme));
-            putView(new MWVSystem(_styleScheme));
+            putView(new MWVTopLevel(_styleScheme));
             putView(new MWVVideoElementaryStream(_styleScheme, _threadWorkerPool));
             putView(new MVWReelMagicTransformationViewer(_styleScheme));
             this.ResumeLayout(true);

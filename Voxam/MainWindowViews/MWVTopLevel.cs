@@ -30,11 +30,11 @@ using System.Windows.Forms;
 
 namespace Voxam
 {
-    public partial class MWVSystem : UserControl, IMainWindowView
+    public partial class MWVTopLevel : UserControl, IMainWindowView
     {
         private MasterSourceProvider _masterSourceProvider = null;
 
-        public MWVSystem(ProgramStyleScheme programStyleScheme = null)
+        public MWVTopLevel(ProgramStyleScheme programStyleScheme = null)
         {
             InitializeComponent();
             programStyleScheme?.StyleControlChildren(this);
@@ -51,7 +51,7 @@ namespace Voxam
             }
         }
         public Control Control => this;
-        public string ViewMenuName => "System";
+        public string ViewMenuName => "Top Level";
         public void PopulateViewMenu(ToolStripMenuItem tsmi)
         {
             //

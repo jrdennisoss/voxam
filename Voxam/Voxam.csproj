@@ -86,11 +86,11 @@
     <Compile Include="MainWindowViews\MVWReelMagicTransformationViewer.Designer.cs">
       <DependentUpon>MVWReelMagicTransformationViewer.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainWindowViews\MWVSystem.cs">
+    <Compile Include="MainWindowViews\MWVTopLevel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="MainWindowViews\MWVSystem.Designer.cs">
-      <DependentUpon>MWVSystem.cs</DependentUpon>
+    <Compile Include="MainWindowViews\MWVTopLevel.Designer.cs">
+      <DependentUpon>MWVTopLevel.cs</DependentUpon>
     </Compile>
     <Compile Include="MainWindowViews\MWVVideoElementaryStream.cs">
       <SubType>UserControl</SubType>
@@ -178,8 +178,8 @@
     <EmbeddedResource Include="MainWindowViews\MWVStart.resx">
       <DependentUpon>MWVStart.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainWindowViews\MWVSystem.resx">
-      <DependentUpon>MWVSystem.cs</DependentUpon>
+    <EmbeddedResource Include="MainWindowViews\MWVTopLevel.resx">
+      <DependentUpon>MWVTopLevel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainWindowViews\MWVVideoElementaryStream.resx">
       <DependentUpon>MWVVideoElementaryStream.cs</DependentUpon>
