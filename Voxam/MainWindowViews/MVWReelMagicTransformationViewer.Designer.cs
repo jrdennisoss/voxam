@@ -51,6 +51,7 @@ namespace Voxam
             this.colTemporalSequenceNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colFCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colCorrectedFCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDeltaFCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this._dataGridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -65,7 +66,8 @@ namespace Voxam
             this.colType,
             this.colTemporalSequenceNumber,
             this.colFCode,
-            this.colCorrectedFCode});
+            this.colCorrectedFCode,
+            this.colDeltaFCode});
             this._dataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this._dataGridView.Location = new System.Drawing.Point(0, 0);
             this._dataGridView.Name = "_dataGridView";
@@ -116,6 +118,16 @@ namespace Voxam
             this.colCorrectedFCode.ReadOnly = true;
             this.colCorrectedFCode.Width = 154;
             // 
+            // colDeltaFCode
+            // 
+            this.colDeltaFCode.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.colDeltaFCode.FillWeight = 1F;
+            this.colDeltaFCode.HeaderText = "Delta f_code";
+            this.colDeltaFCode.MinimumWidth = 8;
+            this.colDeltaFCode.Name = "colDeltaFCode";
+            this.colDeltaFCode.ReadOnly = true;
+            this.colDeltaFCode.Width = 126;
+            // 
             // MVWReelMagicTransformationViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -137,5 +149,6 @@ namespace Voxam
         private System.Windows.Forms.DataGridViewTextBoxColumn colTemporalSequenceNumber;
         private System.Windows.Forms.DataGridViewTextBoxColumn colFCode;
         private System.Windows.Forms.DataGridViewTextBoxColumn colCorrectedFCode;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colDeltaFCode;
     }
 }

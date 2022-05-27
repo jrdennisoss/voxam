@@ -118,14 +118,26 @@ namespace Voxam
 
                 case 3: //Transformed F_Code
                     if ((picture.Type != MPEG1Picture.PictureType.Predictive) && (picture.Type != MPEG1Picture.PictureType.Bipredictive)) return "N/A";
+                    return patchPicture(picture).ForwardFCode.ToString();
 
-                    MPEG1Picture convertedPicture = picture;
-                    var converter = _masterSourceProvider.VideoConverterPictureCollection[picture];
-                    if (converter != null) convertedPicture = converter.PatchPicture(picture);
-                    return convertedPicture.ForwardFCode.ToString();
+                case 4: //Delta f_code
+                    if ((picture.Type != MPEG1Picture.PictureType.Predictive) && (picture.Type != MPEG1Picture.PictureType.Bipredictive)) return "N/A";
+                    int delta = patchPicture(picture).ForwardFCode;
+                    while (delta < picture.ForwardFCode) delta += 7;
+                    delta -= picture.ForwardFCode;
+                    return delta.ToString();
+
             }
             return "";
         }
+
+        private MPEG1Picture patchPicture(MPEG1Picture picture)
+        {
+            var converter = _masterSourceProvider.VideoConverterPictureCollection[picture];
+            if (converter == null) return picture;
+            return converter.PatchPicture(picture);
+        }
+
 
         private void MVWReelMagicTransformationViewer_VisibleChanged(object sender, EventArgs e)
         {
