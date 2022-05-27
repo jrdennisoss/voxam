@@ -19,6 +19,7 @@
 
 
 using System;
+using System.IO;
 using System.Windows.Forms;
 using Voxam.MPEG1ToolKit.Objects;
 
@@ -42,6 +43,8 @@ namespace Voxam
             return new ToolStripItem[]
             {
                 new ToolStripMenuItem("ReelMagic Video Converter Settings", null, mnuReelMagicVideoConverterSettings_Click),
+                new ToolStripMenuItem("Export to CSV...", null, mnuExportToCSV_Click),
+
             };
         }
 
@@ -52,6 +55,48 @@ namespace Voxam
                 frm.ShowDialog(this);
             _dataGridView.Refresh();
         }
+
+        private void mnuExportToCSV_Click(object sender, EventArgs e)
+        {
+            if (_masterSourceProvider == null) return;
+
+            using (var sfd = new SaveFileDialog())
+            {
+                sfd.Title = "Export to CSV...";
+                sfd.Filter = "CSV Files (*.csv)|*.csv|All files (*.*)|*.*";
+                if (sfd.ShowDialog(this) != DialogResult.OK) return;
+                try
+                {
+                    using (var sr = new StreamWriter(sfd.FileName, false))
+                    {
+                        bool first = true;
+                        for (int col = 0; col < _dataGridView.ColumnCount; ++col) 
+                        {
+                            if (!first) sr.Write(','); first = false;
+                            sr.Write(_dataGridView.Columns[col].HeaderText);
+                        }
+                        sr.WriteLine();
+
+                        for (int row = 0; row < _masterSourceProvider.Pictures.Count; ++row)
+                        {
+                            first = true;
+                            for (int col = 0; col < _dataGridView.ColumnCount; ++col)
+                            {
+                                if (!first) sr.Write(','); first = false;
+                                sr.Write(GetCellValue(row, col));
+                            }
+                            sr.WriteLine();
+                        }
+                    }
+                    MessageBox.Show("Success", "Export to CSV", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Export to CSV failed.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
 
 
         //
