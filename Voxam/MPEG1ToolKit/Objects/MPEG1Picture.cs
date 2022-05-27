@@ -56,7 +56,7 @@ namespace Voxam.MPEG1ToolKit.Objects
             TemporalSequenceNumber = temporalSequenceNumber;
             Type = type;
             VBVDelay = vbvDelay;
-            FullPELBackwardVector = fullPELBackwardVector;
+            FullPELForwardVector = fullPELForwardVector;
             ForwardFCode = forwardFCode;
             FullPELBackwardVector = fullPELBackwardVector;
             BackwardFCode = backwardFCode;
