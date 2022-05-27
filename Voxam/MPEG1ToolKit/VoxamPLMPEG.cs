@@ -313,9 +313,14 @@ namespace Voxam.MPEG1ToolKit
             private Bitmap _forwardPictureBuffer = null;
             private Bitmap _backwardPictureBuffer = null;
 
+            private int _currentPictureBufferDecodeTag = -1;
+            private int _forwardPictureBufferDecodeTag = -1;
+            private int _backwardPictureBufferDecodeTag = -1;
+
             public ThreadWorkerPool ThreadWorkerPool = null;
             public VideoConverterPictureCollection VideoConverterPictureCollection;
 
+            public VESDec.DecoderPictureBuffer LastDecodePictureBufferType => _lastDecodedPictureBufferType;
             public Image DecodedPicture { get { return _decodedPicture; } }
 
             public Image CurrentPictureBuffer
@@ -355,8 +360,14 @@ namespace Voxam.MPEG1ToolKit
                 }
             }
 
+            public int DecodedPictureDecodeTag => _vesdec.GetPictureDecodeTag(VESDec.DecoderPictureBuffer.Current);
+            public int CurrentPictureBufferDecodeTag => _currentPictureBufferDecodeTag;
+            public int ForwardPictureBufferDecodeTag => _forwardPictureBufferDecodeTag;
+            public int BackwardPictureBufferDecodeTag => _backwardPictureBufferDecodeTag;
 
-            public bool Decode(MPEG1Picture picture)
+
+
+            public bool Decode(MPEG1Picture picture, int decodeTag = -1)
             {
                 if (picture == null) return false;
 
@@ -384,11 +395,13 @@ namespace Voxam.MPEG1ToolKit
                     case 1: _vesdec.ForceHasReferenceFrame = 1; break;
                 }
 
+                if (decodeTag > -1) _vesdec.DecodeTag = decodeTag;
+
                 if (!_vesdec.DecodeSinglePicture(_decodedPicture, picbuf.Buffer, 0, picbuf.Length)) return false;
                 _lastDecodedPictureBufferType = _vesdec.LastFeedPictureBufferType;
-                if (PictureDecodedEvent != null) PictureDecodedEvent(this);
 
                 collectDecoderPictureBuffers();
+                if (PictureDecodedEvent != null) PictureDecodedEvent(this);
                 return true;
             }
 
@@ -400,6 +413,9 @@ namespace Voxam.MPEG1ToolKit
                 _currentPictureBuffer = null;
                 _forwardPictureBuffer = null;
                 _backwardPictureBuffer = null;
+                _currentPictureBufferDecodeTag = -1;
+                _forwardPictureBufferDecodeTag = -1;
+                _backwardPictureBufferDecodeTag = -1;
                 if (DecoderChangedEvent != null) DecoderChangedEvent(this);
             }
 
@@ -407,8 +423,6 @@ namespace Voxam.MPEG1ToolKit
             {
                 _vesdec.Dispose();
             }
-
-            public VESDec.DecoderPictureBuffer LastDecodePictureBufferType => _lastDecodedPictureBufferType;
 
             private static MPEG1Sequence lookupSequence(IMPEG1Object obj)
             {
@@ -455,15 +469,29 @@ namespace Voxam.MPEG1ToolKit
                 _currentPictureBuffer = null;
                 _forwardPictureBuffer = null;
                 _backwardPictureBuffer = null;
+
+                _currentPictureBufferDecodeTag = -1;
+                _forwardPictureBufferDecodeTag = -1;
+                _backwardPictureBufferDecodeTag = -1;
             }
 
             private void collectDecoderPictureBuffers()
             {
                 if (this.ThreadWorkerPool != null)
                 {
-                    var currentWorker  = this.ThreadWorkerPool.EnqueueJob(delegate { _vesdec.CollectPictureBuffer(_currentPictureBuffer,  VESDec.DecoderPictureBuffer.Current);  });
-                    var forwardWorker  = this.ThreadWorkerPool.EnqueueJob(delegate { _vesdec.CollectPictureBuffer(_forwardPictureBuffer,  VESDec.DecoderPictureBuffer.Forward);  });
-                    var backwardWorker = this.ThreadWorkerPool.EnqueueJob(delegate { _vesdec.CollectPictureBuffer(_backwardPictureBuffer, VESDec.DecoderPictureBuffer.Backward); });
+                    var currentWorker  = this.ThreadWorkerPool.EnqueueJob(delegate { 
+                        _vesdec.CollectPictureBuffer(_currentPictureBuffer, VESDec.DecoderPictureBuffer.Current);
+                        _currentPictureBufferDecodeTag = _vesdec.GetPictureDecodeTag(VESDec.DecoderPictureBuffer.Current);
+                    });
+                    var forwardWorker  = this.ThreadWorkerPool.EnqueueJob(delegate {
+                        _vesdec.CollectPictureBuffer(_forwardPictureBuffer, VESDec.DecoderPictureBuffer.Forward);
+                        _forwardPictureBufferDecodeTag = _vesdec.GetPictureDecodeTag(VESDec.DecoderPictureBuffer.Forward);
+                    });
+                    var backwardWorker = this.ThreadWorkerPool.EnqueueJob(delegate {
+                        _vesdec.CollectPictureBuffer(_backwardPictureBuffer, VESDec.DecoderPictureBuffer.Backward); 
+                        _backwardPictureBufferDecodeTag = _vesdec.GetPictureDecodeTag(VESDec.DecoderPictureBuffer.Backward);
+                    });
+
                     backwardWorker.WaitForCompletion();
                     forwardWorker.WaitForCompletion();
                     currentWorker.WaitForCompletion();
