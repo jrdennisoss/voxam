@@ -101,6 +101,7 @@ namespace Voxam
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "MPEGObjectInspector";
+            this.ShowInTaskbar = false;
             this.Text = "MPEG Object Inspector";
             ((System.ComponentModel.ISupportInitialize)(this._dataGridView)).EndInit();
             this.ResumeLayout(false);
