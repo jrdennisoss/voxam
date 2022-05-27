@@ -247,7 +247,7 @@ namespace Voxam
             if (picture == null) goto failed;
             if (_objectInspector != null) _objectInspector.InspectedObject = picture;
 
-            if (!_decoder.Decode(picture)) goto failed;
+            if (!_decoder.Decode(picture, _pictureStream.SelectedPictureIndex)) goto failed;
             var img = _decoder.DecodedPicture;
             _pbPreview.Image = img;
             if ((img.Width != _lastDisplayedPictureSize.Width) || (img.Height != _lastDisplayedPictureSize.Height))
