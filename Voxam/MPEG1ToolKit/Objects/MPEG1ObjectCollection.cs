@@ -16,6 +16,7 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
+using System.Collections;
 using System.Collections.Generic;
 using Voxam.MPEG1ToolKit.Streams;
 
@@ -47,5 +48,22 @@ namespace Voxam.MPEG1ToolKit.Objects
 
         public IMPEG1Object this[int index] => _list[index];
         public int Count => _list.Count;
+
+
+        public IEnumerator<IMPEG1Object> GetEnumerator() => new Enumerator(this);
+        IEnumerator IEnumerable.GetEnumerator() => new Enumerator(this);
+        private class Enumerator : IEnumerator<IMPEG1Object>
+        {
+            private int _idx = -1;
+            private readonly MPEG1ObjectCollection _collection;
+            public Enumerator(MPEG1ObjectCollection collection) => _collection = collection;
+            public IMPEG1Object Current => _collection[_idx];
+            object IEnumerator.Current => _collection[_idx];
+            public void Dispose() { }
+            public bool MoveNext() => ++_idx < _collection.Count;
+            public void Reset() => _idx = -1;
+        }
+
+
     }
 }

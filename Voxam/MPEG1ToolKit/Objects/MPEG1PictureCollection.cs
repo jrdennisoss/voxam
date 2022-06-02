@@ -19,6 +19,7 @@
 
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 using Voxam.MPEG1ToolKit.Streams;
@@ -81,5 +82,20 @@ namespace Voxam.MPEG1ToolKit.Objects
 
         public int Count { get { return _list.Count; } }
         public MPEG1Picture this[int index] { get { return _list[index]; } }
+
+        public IEnumerator<MPEG1Picture> GetEnumerator() => new Enumerator(this);
+        IEnumerator IEnumerable.GetEnumerator() => new Enumerator(this);
+
+        private class Enumerator : IEnumerator<MPEG1Picture>
+        {
+            private int _idx = -1;
+            private readonly MPEG1PictureCollection _collection;
+            public Enumerator(MPEG1PictureCollection collection) => _collection = collection;
+            public MPEG1Picture Current => _collection[_idx];
+            object IEnumerator.Current => _collection[_idx];
+            public void Dispose() { }
+            public bool MoveNext() => ++_idx < _collection.Count;
+            public void Reset() => _idx = -1;
+        }
     }
 }

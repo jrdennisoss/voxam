@@ -16,10 +16,11 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
+using System.Collections.Generic;
 
 namespace Voxam.MPEG1ToolKit.Objects
 {
-    public interface IMPEG1PictureCollection
+    public interface IMPEG1PictureCollection : IEnumerable<MPEG1Picture>
     {
         int Count { get; }
         MPEG1Picture this[int index] { get; }
