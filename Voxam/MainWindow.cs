@@ -60,6 +60,7 @@ namespace Voxam
             putView(new MWVTopLevel(_styleScheme));
             putView(new MWVVideoElementaryStream(_styleScheme, _threadWorkerPool));
             putView(new MVWReelMagicTransformationViewer(_styleScheme));
+            putView(new MWVExporter(_styleScheme));
             this.ResumeLayout(true);
             setViewMode(_masterSourceProvider != null);
         }

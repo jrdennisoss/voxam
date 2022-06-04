@@ -86,6 +86,12 @@
     <Compile Include="MainWindowViews\MVWReelMagicTransformationViewer.Designer.cs">
       <DependentUpon>MVWReelMagicTransformationViewer.cs</DependentUpon>
     </Compile>
+    <Compile Include="MainWindowViews\MWVExporter.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MainWindowViews\MWVExporter.Designer.cs">
+      <DependentUpon>MWVExporter.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainWindowViews\MWVTopLevel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -99,6 +105,7 @@
       <DependentUpon>MWVVideoElementaryStream.cs</DependentUpon>
     </Compile>
     <Compile Include="MasterSourceProvider.cs" />
+    <Compile Include="MPEG1ToolKit\MPEG1ObjectBufferBuilder.cs" />
     <Compile Include="MPEG1ToolKit\Objects\IMPEG1ObjectCollection.cs" />
     <Compile Include="MPEG1ToolKit\Objects\MagicalSequence.cs" />
     <Compile Include="MPEG1ToolKit\Objects\MPEG1ObjectCollection.cs" />
@@ -121,11 +128,14 @@
     <Compile Include="MPEG1ToolKit\Objects\MPEG1PictureCollection.cs" />
     <Compile Include="MPEG1ToolKit\Objects\MPEG1SequenceEnd.cs" />
     <Compile Include="MPEG1ToolKit\Objects\MPEG1SystemHeader.cs" />
+    <Compile Include="MPEG1ToolKit\Streams\IterWriter.cs" />
     <Compile Include="MPEG1ToolKit\Streams\MPEG1FileStreamObjectSource.cs" />
     <Compile Include="MPEG1ToolKit\Streams\MPEG1MemoryStreamObjectSource.cs" />
+    <Compile Include="MPEG1ToolKit\Streams\MPEG1ObjectSuperstreamPositionMap.cs" />
     <Compile Include="MPEG1ToolKit\Streams\MPEG1StreamObjectIterator.cs" />
     <Compile Include="MPEG1ToolKit\Streams\IMPEG1StreamObjectSource.cs" />
     <Compile Include="MPEG1ToolKit\Streams\MPEG1SubStreamObjectSource.cs" />
+    <Compile Include="MPEG1ToolKit\Streams\PESSubstreamPositionMapper.cs" />
     <Compile Include="MPEG1ToolKit\Threading\IEnqueuedJob.cs" />
     <Compile Include="MPEG1ToolKit\Threading\ThreadWorkerPool.cs" />
     <Compile Include="MainWindowViews\MWVStart.cs">
@@ -174,6 +184,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MainWindowViews\MVWReelMagicTransformationViewer.resx">
       <DependentUpon>MVWReelMagicTransformationViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainWindowViews\MWVExporter.resx">
+      <DependentUpon>MWVExporter.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainWindowViews\MWVStart.resx">
       <DependentUpon>MWVStart.cs</DependentUpon>
