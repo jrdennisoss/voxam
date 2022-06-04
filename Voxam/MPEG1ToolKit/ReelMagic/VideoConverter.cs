@@ -165,5 +165,47 @@ namespace Voxam.MPEG1ToolKit.ReelMagic
             buf[off + 8] &= 0xC7;
             buf[off + 8] |= (byte)(backwardValue << 3);
         }
+
+
+
+
+
+
+        public MPEG1Sequence PatchSequence(MPEG1Sequence sequence, byte[] buf, int off, int len)
+        {
+            if (len < 12) return sequence;
+
+            if (this._settings.DecodeMode == VideoConverterSettings.Mode.NONE)
+                return sequence;
+
+            var patchedSequence = PatchSequence(sequence);
+            if (patchedSequence == sequence) return sequence;
+
+            writeFrameRateCode(buf, off, len, patchedSequence.FrameRateCode);
+            return patchedSequence;
+        }
+
+        public MPEG1Sequence PatchSequence(MPEG1Sequence sequence)
+        {
+            if (!(sequence is MagicalSequence)) return sequence; //nothing to do...
+
+            return new MPEG1Sequence(null, null,
+                sequence.HorizontalSize,
+                sequence.VerticalSize,
+                sequence.AspectRatioCode,
+                (byte)(sequence.FrameRateCode & 0x07),
+                sequence.Bitrate,
+                sequence.VBVBufferSize,
+                sequence.ConstrainedParameters,
+                sequence.HasCustomIntraQuantizerMatrix,
+                sequence.HasCustomNonIntraQuantizerMatrix);
+        }
+
+        private static void writeFrameRateCode(byte[] buf, int off, int len, int frcValue)
+        {
+            frcValue &= 0x0F;
+            buf[off + 7] &= 0xF0;
+            buf[off + 7] |= (byte)frcValue;
+        }
     }
 }
