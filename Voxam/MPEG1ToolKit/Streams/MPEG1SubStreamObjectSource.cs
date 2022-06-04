@@ -32,6 +32,7 @@ namespace Voxam.MPEG1ToolKit.Streams
         public readonly MPEG1StreamObjectIterator Parent;
         public readonly long ParentSourceStartPosition;
         public readonly byte StreamId;
+        public readonly PESSubstreamPositionMapper PESSubstreamPositionMapper;
 
         private int _currentMPEGObjectBufferOffset = 0;
         private int _currentMPEGObjectBufferLength = 0;
@@ -39,7 +40,7 @@ namespace Voxam.MPEG1ToolKit.Streams
         private MPEG1PESPacket _currentPacket = null;
 
 
-        public MPEG1SubStreamObjectSource(MPEG1StreamObjectIterator duplicateFrom)
+        public MPEG1SubStreamObjectSource(MPEG1StreamObjectIterator duplicateFrom, bool allocatePositionMapper = true)
         {
             if (!duplicateFrom.MPEGObjectValid) throw new Exception("Can not create substream iterator as parent stream is not position on a valid substream / PES object");
             if (!duplicateFrom.MPEGObjectTypeSubstream) throw new Exception("Can not create substream iterator as parent stream is not position on a valid substream / PES object");
@@ -47,6 +48,7 @@ namespace Voxam.MPEG1ToolKit.Streams
             ParentSourceStartPosition = Parent.MPEGObjectSourceStreamPosition;
             StreamId = Parent.MPEGObjectType;
 
+            this.PESSubstreamPositionMapper = allocatePositionMapper ? new PESSubstreamPositionMapper() : null;
             startCurrentPacket();
         }
 
@@ -56,6 +58,7 @@ namespace Voxam.MPEG1ToolKit.Streams
             ParentSourceStartPosition = duplicateFrom.ParentSourceStartPosition;
             StreamId = duplicateFrom.StreamId;
 
+            this.PESSubstreamPositionMapper = duplicateFrom.PESSubstreamPositionMapper;
             startCurrentPacket();
 
             this.Seek(duplicateFrom._currentSubstreamPosition, SeekOrigin.Begin);
@@ -102,6 +105,26 @@ namespace Voxam.MPEG1ToolKit.Streams
             if (offset < 0) throw new ArgumentOutOfRangeException();
 
 
+            //do we have the substream offset in the mapper cache? if so,
+            //use that to seriously accelerate lookup...
+            if (this.PESSubstreamPositionMapper != null)
+            {
+                var pesPacket = this.PESSubstreamPositionMapper.LookupPacketFromSubstreamPosition(offset, out int pesPacketOffset);
+                if (pesPacket != null)
+                {
+                    Parent.SeekSourceTo(pesPacket.Source.IteratorSourceStreamPosition, SeekOrigin.Begin);
+                    _currentSubstreamPosition = offset - pesPacketOffset;
+                    startCurrentPacket();
+
+                    _currentMPEGObjectBufferOffset += pesPacketOffset;
+                    _currentMPEGObjectBufferLength -= pesPacketOffset;
+                    _currentSubstreamPosition += pesPacketOffset;
+
+                    return 0;
+                }
+            }
+
+
             if (offset < _currentSubstreamPosition)
             {
                 Console.Error.WriteLine("WARNING: OPTIMIZE THIS! SEEKING PARENT BACK TO PES START!!");
@@ -134,6 +157,7 @@ namespace Voxam.MPEG1ToolKit.Streams
             if (_currentPacket == null) return;
             _currentMPEGObjectBufferOffset += _currentPacket.PayloadStartOffset;
             _currentMPEGObjectBufferLength = _currentPacket.PayloadLength;
+            this.PESSubstreamPositionMapper?.Push(_currentSubstreamPosition, _currentPacket);
         }
 
         private bool advanceToNextPacket()
