@@ -96,6 +96,7 @@ namespace Voxam
             // 
             // scanDirectoryToolStripMenuItem
             // 
+            this.scanDirectoryToolStripMenuItem.Enabled = false;
             this.scanDirectoryToolStripMenuItem.Name = "scanDirectoryToolStripMenuItem";
             this.scanDirectoryToolStripMenuItem.Size = new System.Drawing.Size(228, 34);
             this.scanDirectoryToolStripMenuItem.Text = "Scan Directory";
