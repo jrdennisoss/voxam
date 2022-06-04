@@ -26,10 +26,12 @@ namespace Voxam.MPEG1ToolKit.Objects
     {
         public readonly MPEG1StreamObjectIterator Iterator;
         public readonly long IteratorSourceStreamPosition;
+        public readonly int IteratorSourceStreamAbsoluteLength;
         public MPEG1ObjectSource(MPEG1StreamObjectIterator iterator)
         {
             Iterator = iterator;
             IteratorSourceStreamPosition = Iterator.MPEGObjectSourceStreamPosition;
+            IteratorSourceStreamAbsoluteLength = Iterator.AbsoluteBufferLength;
         }
     }
 }
