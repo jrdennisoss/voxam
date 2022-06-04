@@ -1681,7 +1681,10 @@ int plm_buffer_has_start_code(plm_buffer_t *self, int code) {
 
 int plm_buffer_peek_non_zero(plm_buffer_t *self, int bit_count) {
 	if (!plm_buffer_has(self, bit_count)) {
-		return FALSE;
+		bit_count = (self->length << 3) - self->bit_index;
+		if (bit_count < 1)
+			return FALSE;
+		self->has_ended = FALSE;
 	}
 
 	int val = plm_buffer_read(self, bit_count);
