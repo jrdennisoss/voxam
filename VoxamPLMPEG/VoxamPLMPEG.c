@@ -250,6 +250,7 @@ vpm_vesdec_feed_decoder(vpm_vesdec_handle vesdec, int max_iterations, const void
 
     rv = 0;
     vesdec->last_decoded_frame = NULL;
+    vesdec->plm_video.start_code = -1;
 
     vpm_vesdec_set_mem_buffer(vesdec, buf, off, len);
     while (max_iterations && !plm_buffer_has_ended(&vesdec->plm_buffer)) {
