@@ -39,6 +39,7 @@ namespace Voxam
         //
         // system/main-level stuff is here...
         //
+        public readonly string Filename;
         public readonly MPEG1StreamObjectIterator PrimaryIterator;
         private IMPEG1ObjectCollection _objectCollection = null;
         public IMPEG1ObjectCollection Objects
@@ -113,6 +114,7 @@ namespace Voxam
 
         public MasterSourceProvider(string filename)
         {
+            this.Filename = filename;
             PrimaryIterator = new MPEG1StreamObjectIterator(new MPEG1FileStreamObjectSource(filename));
         }
 
