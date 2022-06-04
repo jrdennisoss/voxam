@@ -280,6 +280,7 @@ namespace Voxam.MPEG1ToolKit.Streams
                     //specified offset does not contain a complete MPEG-1 object... need to shift and re-fill buffer...
                     shiftBuffer(_mpegObjectBufferCurrentStartOffset);
                     fillMPEGObjectBuffer();
+                    findNextObjectStart();
                 }
                 return;
             }
