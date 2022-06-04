@@ -46,17 +46,19 @@ namespace Voxam.MPEG1ToolKit.Streams
             Parent = duplicateFrom.Duplicate();
             ParentSourceStartPosition = Parent.MPEGObjectSourceStreamPosition;
             StreamId = Parent.MPEGObjectType;
+
             startCurrentPacket();
         }
 
         private MPEG1SubStreamObjectSource(MPEG1SubStreamObjectSource duplicateFrom)
         {
-            Parent = duplicateFrom.Parent.Duplicate();
+            Parent = duplicateFrom.Parent.Duplicate(duplicateFrom.ParentSourceStartPosition);
             ParentSourceStartPosition = duplicateFrom.ParentSourceStartPosition;
             StreamId = duplicateFrom.StreamId;
-            _currentMPEGObjectBufferOffset = duplicateFrom._currentMPEGObjectBufferOffset;
-            _currentMPEGObjectBufferLength = duplicateFrom._currentMPEGObjectBufferLength;
-            throw new Exception("FIXME: this is not gonna work because parent offset can change during duplication");
+
+            startCurrentPacket();
+
+            this.Seek(duplicateFrom._currentSubstreamPosition, SeekOrigin.Begin);
         }
 
         public void Dispose()
