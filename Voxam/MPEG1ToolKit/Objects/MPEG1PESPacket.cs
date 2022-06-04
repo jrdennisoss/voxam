@@ -146,6 +146,7 @@ namespace Voxam.MPEG1ToolKit.Objects
                     pts = parsePtsDtsField(buf, bufoff + payloadStartOffset);
                     payloadLength -= 5;
                     payloadStartOffset += 5;
+                    break; //PTS and/or DTS means this is lat thing in the header... i think...
                 }
                 else if ((buf[bufoff + payloadStartOffset] & 0xF0) == 0x30)
                 {
@@ -156,10 +157,11 @@ namespace Voxam.MPEG1ToolKit.Objects
                     dts = parsePtsDtsField(buf, bufoff + payloadStartOffset + 5);
                     payloadLength -= 10;
                     payloadStartOffset += 10;
+                    break; //PTS and/or DTS means this is lat thing in the header... i think...
                 }
                 else if (buf[bufoff + payloadStartOffset] == 0x0f)
                 {
-                    //done with header
+                    //explicitly done with header
                     payloadLength -= 1;
                     payloadStartOffset += 1;
                     break;
