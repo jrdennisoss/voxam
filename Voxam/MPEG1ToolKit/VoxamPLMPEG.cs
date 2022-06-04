@@ -408,6 +408,7 @@ namespace Voxam.MPEG1ToolKit
             public void Reset()
             {
                 _vesdec.Reset();
+                _loadedSequence = null;
                 _lastDecodedPictureBufferType = VESDec.DecoderPictureBuffer.Invalid;
                 _decodedPicture = null;
                 _currentPictureBuffer = null;
@@ -417,6 +418,7 @@ namespace Voxam.MPEG1ToolKit
                 _forwardPictureBufferDecodeTag = -1;
                 _backwardPictureBufferDecodeTag = -1;
                 if (DecoderChangedEvent != null) DecoderChangedEvent(this);
+                if (PictureDecodedEvent != null) PictureDecodedEvent(this);
             }
 
             public void Dispose()

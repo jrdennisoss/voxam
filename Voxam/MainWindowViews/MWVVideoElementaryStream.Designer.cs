@@ -53,6 +53,7 @@ namespace Voxam
             this._pictureStream = new Voxam.PictureStream();
             this._btnPlayPause = new System.Windows.Forms.Button();
             this._playTimer = new System.Windows.Forms.Timer(this.components);
+            this._btnResetDecoder = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this._pbPreview)).BeginInit();
             this.SuspendLayout();
             // 
@@ -113,10 +114,21 @@ namespace Voxam
             // 
             this._playTimer.Tick += new System.EventHandler(this._playTimer_Tick);
             // 
+            // _btnResetDecoder
+            // 
+            this._btnResetDecoder.Location = new System.Drawing.Point(113, 74);
+            this._btnResetDecoder.Name = "_btnResetDecoder";
+            this._btnResetDecoder.Size = new System.Drawing.Size(151, 45);
+            this._btnResetDecoder.TabIndex = 3;
+            this._btnResetDecoder.Text = "Reset Decoder";
+            this._btnResetDecoder.UseVisualStyleBackColor = true;
+            this._btnResetDecoder.Click += new System.EventHandler(this._btnResetDecoder_Click);
+            // 
             // MWVVideoElementaryStream
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this._btnResetDecoder);
             this.Controls.Add(this._btnPlayPause);
             this.Controls.Add(this._pbPreview);
             this.Controls.Add(this._pictureStream);
@@ -136,5 +148,6 @@ namespace Voxam
         private System.Windows.Forms.PictureBox _pbPreview;
         private System.Windows.Forms.Button _btnPlayPause;
         private System.Windows.Forms.Timer _playTimer;
+        private System.Windows.Forms.Button _btnResetDecoder;
     }
 }

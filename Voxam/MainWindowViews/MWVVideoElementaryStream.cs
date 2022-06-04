@@ -231,6 +231,7 @@ namespace Voxam
             _pbPreview.Left = this.ClientRectangle.Width - _pbPreview.Width;
 
             _btnPlayPause.Top = _pictureStream.Top - _btnPlayPause.Height - 5;
+            _btnResetDecoder.Top = _btnPlayPause.Top;
         }
 
         private void MWVVideoElementaryStream_VisibleChanged(object sender, EventArgs e)
@@ -293,6 +294,13 @@ namespace Voxam
             if (_pictureStream.SelectedPictureIndex >= _pictureStream.PictureCount) _pictureStream.SelectedPictureIndex = _pictureStream.PictureCount - 1;
             displaySelectedPicture();
             _pictureStream.SetFocusToIndex(_pictureStream.SelectedPictureIndex);
+        }
+
+
+
+        private void _btnResetDecoder_Click(object sender, EventArgs e)
+        {
+            _decoder.Reset();
         }
 
 
