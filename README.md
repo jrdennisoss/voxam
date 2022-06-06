@@ -10,10 +10,8 @@ One could say that this tool "seperates out the different components" of a video
 # Getting Started
 
 Release downloads can be found on the GitHub release page:
-XXX ADD URL HERE!!! XXX
-XXX ADD URL HERE!!! XXX
-XXX ADD URL HERE!!! XXX
-XXX ADD URL HERE!!! XXX
+
+https://github.com/jrdennisoss/voxam/releases
 
 
 Extract the release from the zip file and run the `Voxam.exe` file.
