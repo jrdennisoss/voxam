@@ -49,7 +49,7 @@ namespace Voxam
             }
         }
 
-        public MainWindow()
+        public MainWindow(string openFilename = null)
         {
             InitializeComponent();
             _styleScheme.StyleForm(this);
@@ -63,6 +63,9 @@ namespace Voxam
             putView(new MWVExporter(_styleScheme));
             this.ResumeLayout(true);
             setViewMode(_masterSourceProvider != null);
+
+            if (openFilename != null)
+                loadMasterSourceFromFile(openFilename);
         }
         private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
